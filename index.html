@@ -7,7 +7,6 @@
     <style>
         :root {
             --primary-color: #2c3e50;
-            --accent-color: #3498db;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #333333;
@@ -46,12 +45,12 @@
             box-sizing: border-box;
         }
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--primary-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
             margin-top: 2rem;
             margin-bottom: 1rem;
+            border-bottom: 2px solid #ddd;
         }
         .section-title:first-child {
             margin-top: 0;
@@ -60,7 +59,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
         .card {
             background-color: var(--card-bg);
@@ -71,7 +69,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-left: 5px solid var(--accent-color);
+            border-left: 5px solid #3498db;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -89,17 +87,16 @@
         }
         .btn {
             display: inline-block;
-            background-color: var(--accent-color);
-            color: white;
             text-align: center;
             padding: 0.6rem 1rem;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.2s;
+            color: white;
+            transition: opacity 0.2s;
         }
         .btn:hover {
-            background-color: #2980b9;
+            opacity: 0.85;
         }
         footer {
             text-align: center;
