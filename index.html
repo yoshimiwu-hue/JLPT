@@ -5,20 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JLPT N5 學習中心</title>
     <style>
-        body { font-family: sans-serif; background: #f8f9fa; text-align: center; padding: 50px; color: #333; }
-        .box { background: white; max-width: 500px; margin: 0 auto; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: #f8f9fa; 
+            text-align: center; 
+            padding: 50px; 
+            color: #333; 
+            margin: 0;
+        }
+        .box { 
+            background: white; 
+            max-width: 500px; 
+            margin: 0 auto; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
         h1 { color: #2c3e50; margin-bottom: 10px; }
         p { color: #666; margin-bottom: 30px; }
-        .btn { display: block; background: #3498db; color: white; padding: 14px; margin: 15px 0; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: background 0.2s; }
-        .btn:hover { background: #2980b9; }
+        .btn { 
+            display: block; 
+            color: white; 
+            padding: 14px; 
+            margin: 15px 0; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            transition: opacity 0.2s; 
+        }
+        .btn:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
     <div class="box">
         <h1>🌟 JLPT N5 學習與測驗中心</h1>
         <p>請選擇您想進行的單元：</p>
-        <a href="n5/n5-test.html" class="btn" style="background-color: #e74c3c;">✍️ N5 模擬測驗</a>
-        <a href="n5/n5-listening.html" class="btn" style="background-color: #27ae60;">🎧 N5 單字聽力練習</a>
+        
+        <!-- 指向 n5/test/ 資料夾 -->
+        <a href="n5/test/" class="btn" style="background-color: #e74c3c;">✍️ N5 模擬測驗</a>
+        
+        <!-- 指向 n5/listening/ 資料夾 -->
+        <a href="n5/listening/" class="btn" style="background-color: #27ae60;">🎧 N5 單字聽力練習</a>
     </div>
 </body>
 </html>
