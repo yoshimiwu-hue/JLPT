@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JLPT 日語學習與測驗中心</title>
+    <title>JLPT N5 學習中心</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -11,54 +11,50 @@
             color: #333;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header {
             background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 2.5rem 1rem;
+            padding: 3rem 1rem;
         }
-        header h1 { margin: 0 0 0.5rem 0; font-size: 2rem; }
-        header p { margin: 0; color: #bdc3c7; }
+        header h1 { margin: 0 0 0.5rem 0; font-size: 2.2rem; }
+        header p { margin: 0; color: #bdc3c7; font-size: 1.1rem; }
         main {
-            max-width: 800px;
-            margin: 2rem auto;
+            flex: 1;
+            max-width: 700px;
+            width: 100%;
+            margin: 3rem auto;
             padding: 0 1rem;
-        }
-        .section-title {
-            font-size: 1.3rem;
-            color: #2c3e50;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 0.3rem;
-        }
-        .card-group {
+            box-sizing: border-box;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
         .card {
             background: #ffffff;
-            border-radius: 8px;
-            padding: 1.2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-left: 5px solid #3498db;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 5px solid #3498db;
+            transition: transform 0.2s;
         }
-        .card h3 { margin-top: 0; color: #2c3e50; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin-top: 0; color: #2c3e50; font-size: 1.4rem; }
+        .card p { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
         .btn {
             display: inline-block;
             background-color: #3498db;
             color: white;
-            text-align: center;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
-            margin-top: 1rem;
+            font-size: 1rem;
         }
         .btn:hover { background-color: #2980b9; }
         footer {
@@ -67,52 +63,27 @@
             background-color: #e9ecef;
             color: #6c757d;
             font-size: 0.9rem;
-            margin-top: 3rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>JLPT 日語學習與測驗中心</h1>
-        <p>請選擇您想練習的獨立單元</p>
+        <h1>JLPT N5 學習與測驗中心</h1>
+        <p>請選擇您想進行的學習單元</p>
     </header>
 
     <main>
-        <h2 class="section-title" style="border-color: #e74c3c;">🎯 N5 級別專區</h2>
-        <div class="card-group">
-            <div class="card" style="border-left-color: #e74c3c;">
-                <div>
-                    <h3>N5 測驗</h3>
-                    <p>基礎文法與文字模擬測驗。</p>
-                </div>
-                <a href="n5-test.html" class="btn" style="background-color: #e74c3c;">進入 N5 測驗</a>
-            </div>
-            <div class="card" style="border-left-color: #e74c3c;">
-                <div>
-                    <h3>N5 單字聽力</h3>
-                    <p>255個核心單字盲聽與真人語音練習。</p>
-                </div>
-                <a href="n5-listening.html" class="btn" style="background-color: #e74c3c;">進入 N5 聽力</a>
-            </div>
+        <div class="card" style="border-top-color: #e74c3c;">
+            <h3>✍️ N5 模擬測驗</h3>
+            <p>文法與文字綜合模擬測驗，自我檢測實力。</p>
+            <a href="n5/n5-test.html" class="btn" style="background-color: #e74c3c;">開始測驗</a>
         </div>
 
-        <h2 class="section-title" style="border-color: #f39c12;">🚀 N4 級別專區</h2>
-        <div class="card-group">
-            <div class="card" style="border-left-color: #f39c12;">
-                <div>
-                    <h3>N4 測驗</h3>
-                    <p>進階文法與閱讀能力測驗。</p>
-                </div>
-                <a href="n4-test.html" class="btn" style="background-color: #f39c12;">進入 N4 測驗</a>
-            </div>
-            <div class="card" style="border-left-color: #f39c12;">
-                <div>
-                    <h3>N4 單字聽力</h3>
-                    <p>生活常用單字與短句聽力強化。</p>
-                </div>
-                <a href="n4-listening.html" class="btn" style="background-color: #f39c12;">進入 N4 聽力</a>
-            </div>
+        <div class="card" style="border-top-color: #27ae60;">
+            <h3>🎧 N5 單字聽力</h3>
+            <p>255個核心單字盲聽、拼寫與真人語音特訓。</p>
+            <a href="n5/n5-listening.html" class="btn" style="background-color: #27ae60;">開始練習</a>
         </div>
     </main>
 
