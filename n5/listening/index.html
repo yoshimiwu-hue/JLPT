@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JLPT N5 聽力實戰與全單字練習（模擬真人發音版）</title>
+  <title>JLPT N5 全方位單字練習（翻卡發音・聽力測驗・模擬真人版）</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -33,6 +33,7 @@
       line-height: 1.6;
     }
 
+    /* 頂部導覽列 */
     .topbar {
       position: sticky;
       top: 0;
@@ -44,7 +45,10 @@
       padding: 12px 16px;
     }
 
-    .topbar-inner { max-width: 980px; margin: 0 auto; }
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+    }
 
     .topbar-row {
       display: flex;
@@ -86,7 +90,11 @@
       justify-content: space-between;
     }
 
-    .tab-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tab-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
 
     .tab-btn {
       border: 1px solid var(--border);
@@ -112,6 +120,7 @@
       padding: 0 16px;
     }
 
+    /* 控制篩選面板 & 語音面板 */
     .panel {
       background: var(--card);
       border: 1px solid var(--border);
@@ -189,28 +198,46 @@
     }
 
     /* =========================
-       聽力盲聽練習卡片樣式
+       3D 翻卡模式樣式
        ========================= */
-    .listen-stage {
-      max-width: 700px;
+    .flashcard-stage {
+      perspective: 1200px;
+      max-width: 680px;
       margin: 16px auto;
     }
 
-    .listen-card {
+    .flashcard {
+      position: relative;
+      width: 100%;
+      min-height: 360px;
+      transform-style: preserve-3d;
+      transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+    }
+
+    .flashcard.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       background: #ffffff;
       border: 1.5px solid var(--border);
       border-radius: 18px;
       padding: 24px 26px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
-      min-height: 360px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .listen-card.revealed {
-      border-color: #93c5fd;
+    .card-back {
+      transform: rotateY(180deg);
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border-color: #bfdbfe;
     }
 
     .card-top-meta {
@@ -230,99 +257,48 @@
       font-size: 0.8rem;
     }
 
-    .blind-center {
+    .card-center {
       text-align: center;
       margin: auto 0;
-      padding: 18px 0;
+      padding: 12px 0;
     }
 
-    .audio-hero {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      background: #f0f9ff;
-      border: 1.5px solid #bae6fd;
-      border-radius: 16px;
-      padding: 22px 28px;
-      width: 100%;
+    .word-main {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      word-break: keep-all;
     }
 
-    .wave-icon {
-      font-size: 2.5rem;
-      line-height: 1;
+    .word-kana {
+      font-size: 1.25rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 6px;
     }
 
-    .audio-btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .btn-big-audio {
-      padding: 11px 22px;
-      font-size: 1rem;
-      border-radius: 10px;
-    }
-
-    .dictation-area {
-      margin-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .dictation-input {
-      padding: 10px 14px;
-      font-size: 1.05rem;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      width: 260px;
-      max-width: 100%;
-      text-align: center;
-    }
-    .dictation-input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .dictation-result {
-      margin-top: 10px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.94rem;
-    }
-    .dictation-result.ok { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
-    .dictation-result.bad { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
-
-    .answer-reveal-box {
-      text-align: center;
-      padding: 10px 0;
-      animation: fadeIn 0.2s ease;
+    .word-note {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 2px 10px;
+      border-radius: 6px;
     }
 
     .meaning-zh {
-      font-size: 1.85rem;
+      font-size: 1.8rem;
       font-weight: 800;
       color: var(--primary-dark);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
-    .word-revealed {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    .kana-revealed {
+    .back-jp-small {
       font-size: 1.05rem;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 10px;
+      color: #334155;
+      margin-bottom: 14px;
     }
 
     .example-box {
@@ -331,11 +307,20 @@
       border-radius: 10px;
       padding: 12px 14px;
       text-align: left;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
-    .ex-jp { font-size: 1.04rem; font-weight: 600; color: #0f172a; }
-    .ex-zh { font-size: 0.9rem; color: #475569; margin-top: 3px; }
+    .ex-jp {
+      font-size: 1.04rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .ex-zh {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-top: 3px;
+    }
 
     .card-bottom-actions {
       display: flex;
@@ -343,12 +328,17 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      padding-top: 12px;
+      padding-top: 10px;
       border-top: 1px solid #f1f5f9;
     }
 
+    .flip-hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
     .nav-deck {
-      max-width: 700px;
+      max-width: 680px;
       margin: 14px auto 0;
       display: flex;
       flex-wrap: wrap;
@@ -358,7 +348,7 @@
     }
 
     /* =========================
-       四選一測驗模式樣式
+       測驗模式樣式
        ========================= */
     .quiz-card {
       max-width: 720px;
@@ -379,8 +369,17 @@
       border: 1px solid var(--border);
     }
 
-    .quiz-prompt-big { font-size: 2rem; font-weight: 800; color: #0f172a; }
-    .quiz-prompt-sub { font-size: 1rem; color: var(--accent); margin-top: 4px; }
+    .quiz-prompt-big {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .quiz-prompt-sub {
+      font-size: 1rem;
+      color: var(--accent);
+      margin-top: 4px;
+    }
 
     .quiz-options {
       display: grid;
@@ -390,6 +389,8 @@
 
     @media (max-width: 600px) {
       .quiz-options { grid-template-columns: 1fr; }
+      .word-main { font-size: 2rem; }
+      .flashcard { min-height: 390px; }
     }
 
     .q-opt {
@@ -406,15 +407,38 @@
       transition: all 0.15s;
       color: var(--text);
     }
-    .q-opt:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); }
-    .q-opt-num {
-      width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9;
-      font-weight: 700; font-size: 0.85rem; display: inline-flex;
-      align-items: center; justify-content: center; flex-shrink: 0;
+
+    .q-opt:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
     }
-    .q-opt.correct { border-color: var(--success); background: var(--success-bg); color: #14532d; font-weight: 700; }
+
+    .q-opt-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .q-opt.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #14532d;
+      font-weight: 700;
+    }
     .q-opt.correct .q-opt-num { background: var(--success); color: #fff; }
-    .q-opt.wrong { border-color: var(--danger); background: var(--danger-bg); color: #7f1d1d; }
+
+    .q-opt.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #7f1d1d;
+    }
     .q-opt.wrong .q-opt-num { background: var(--danger); color: #fff; }
 
     .quiz-feedback {
@@ -451,17 +475,18 @@
     .vocab-item.mastered { border-left: 4px solid var(--success); }
     .vocab-item.review { border-left: 4px solid var(--warning); }
 
-    .vi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .vi-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
     .vi-word { font-size: 1.25rem; font-weight: 800; color: #0f172a; }
     .vi-kana { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
     .vi-zh { font-size: 1rem; font-weight: 700; color: var(--primary-dark); margin-top: 2px; }
     .vi-ex { font-size: 0.84rem; color: #475569; background: #f8fafc; padding: 7px 9px; border-radius: 6px; }
     .vi-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
@@ -470,7 +495,7 @@
     <div class="topbar-inner">
       <div class="topbar-row">
         <div class="brand">
-          <h1>🎧 JLPT N5 聽力實戰與全單字練習（255 詞・模擬真人發音）</h1>
+          <h1>🇯🇵 JLPT N5 全單字練習庫（255 詞・翻卡即發音・模擬真人聲線）</h1>
         </div>
         <div class="stats-bar">
           <span class="pill" id="totalCountPill">總單字 255</span>
@@ -481,8 +506,8 @@
 
       <div class="mode-tabs">
         <div class="tab-group">
-          <button class="tab-btn active" id="tab-listen" onclick="switchMode('listen')">🎧 聽力盲聽練習</button>
-          <button class="tab-btn" id="tab-quiz" onclick="switchMode('quiz')">✍️ 四選一測驗</button>
+          <button class="tab-btn active" id="tab-flash" onclick="switchMode('flash')">🃏 翻卡背單字</button>
+          <button class="tab-btn" id="tab-quiz" onclick="switchMode('quiz')">✍️ 互動測驗練習</button>
           <button class="tab-btn" id="tab-list" onclick="switchMode('list')">📖 單字總表一覽</button>
         </div>
         <div class="tab-group">
@@ -493,6 +518,7 @@
   </header>
 
   <main class="container">
+    <!-- 全域篩選與真人語音設定面板 -->
     <section class="panel">
       <div class="panel-row">
         <div class="control-group">
@@ -511,6 +537,7 @@
         <div class="control-group" id="speakingStatus" style="color:var(--accent); font-weight:600;"></div>
       </div>
 
+      <!-- 模擬真人發音引擎設定抽屜 -->
       <div class="voice-drawer" id="voiceDrawer">
         <div class="control-group" style="margin-bottom:8px;">
           <label><b>發音引擎：</b>
@@ -520,7 +547,7 @@
               <option value="openai">進階・OpenAI 真人主播級 TTS（需 API Key）</option>
             </select>
           </label>
-          <label><b>預設語速：</b>
+          <label><b>語速：</b>
             <select id="rateSelect">
               <option value="0.75">0.75x 慢速清晰</option>
               <option value="0.95" selected>0.95x 真人自然</option>
@@ -564,17 +591,19 @@
         </div>
 
         <div class="voice-tip">
-          💡 <b>真人發音小提示：</b>若使用 Windows 電腦，強烈建議以 <b>Microsoft Edge</b> 開啟，系統會自動啟用 <b>★ Microsoft Nanami Online (Natural)</b> 等級的真人神經網路語音，抑揚頓挫最貼近日本真人。
+          💡 <b>真人發音小提示：</b>本網頁在單字發音時會優先採用正確假名讀音，避免電腦誤讀日文多音漢字！若使用 Windows 電腦，推薦以 <b>Microsoft Edge</b> 開啟，系統會自動啟用 <b>★ Microsoft Nanami Online (Natural)</b> 等級的真人神經網路語音。
         </div>
       </div>
     </section>
 
+    <!-- 動態模式內容區 -->
     <div id="modeContent"></div>
   </main>
 
   <script>
     // ==========================================
     // 1. JLPT N5 核心單字總庫（255 詞，11 大類）
+    // 格式：[id, 單字表記, 假名讀音, 中文意思, 分類, 詞性備註, 日文例句, 中文例句]
     // ==========================================
     const VOCAB_RAW = [
       // 一、問候與生活用語 (15)
@@ -863,7 +892,7 @@
     // 2. 狀態管理與 LocalStorage 記憶
     // ==========================================
     const STORAGE_KEY = "jlpt_n5_vocab_progress_v1";
-    let progressMap = {};
+    let progressMap = {}; // { [id]: "mastered" | "review" }
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) progressMap = JSON.parse(saved) || {};
@@ -876,21 +905,22 @@
       updateTopStats();
     }
 
-    let currentMode = "listen"; // "listen" | "quiz" | "list"
+    let currentMode = "flash"; // "flash" | "quiz" | "list"
     let filterCat = "all";
     let filterStatus = "all";
-    let hasUserInteracted = false;
 
-    // 聽力盲聽練習狀態
+    // 翻卡狀態
     let deckList = [];
     let deckIndex = 0;
-    let isRevealed = false;
-    let listenLevel = "word"; // "word" | "sentence" | "dictation"
-    let dictationInputVal = "";
-    let dictationResult = null; // { ok: boolean, userText: string }
+    let isFlipped = false;
+    let displayScriptMode = "both"; // "both" | "kanji" | "kana"
+    let autoSpeakOnFlip = true;
+    let autoSpeakExample = false;
+    let autoPlayLoopRunning = false;
+    let autoPlayToken = 0;
 
-    // 四選一測驗狀態
-    let quizType = "listen"; // 預設即聽音辨字
+    // 測驗狀態
+    let quizType = "jp2zh"; // "jp2zh" | "zh2jp" | "listen"
     let quizItem = null;
     let quizOptions = [];
     let quizAnswered = false;
@@ -899,10 +929,11 @@
     let quizTotal = 0;
     let quizCorrect = 0;
 
+    // 列表搜尋
     let listSearchQuery = "";
 
     // ==========================================
-    // 3. 模擬真人發音引擎
+    // 3. 模擬真人發音引擎（Browser Natural / VOICEVOX / OpenAI）
     // ==========================================
     let engineMode = "browser";
     let jaVoices = [];
@@ -949,6 +980,7 @@
       window.speechSynthesis.onvoiceschanged = loadBrowserVoices;
     }
 
+    // 修正常見日語例句的 TTS 多音字
     function normalizeTtsText(text) {
       return text
         .replace(/九時/g, "くじ")
@@ -972,11 +1004,11 @@
       if (st) st.textContent = "";
     }
 
-    function speakText(text, customRate = null) {
+    function speakText(text) {
       return new Promise(async (resolve) => {
         stopSpeaking();
         const myToken = speechToken;
-        const rate = customRate || parseFloat(document.getElementById("rateSelect")?.value || "0.95");
+        const rate = parseFloat(document.getElementById("rateSelect")?.value || "0.95");
         const cleanText = normalizeTtsText(text);
         const st = document.getElementById("speakingStatus");
         if (st) st.textContent = "🔊 真人語音播放中...";
@@ -1009,6 +1041,7 @@
             if (myToken !== speechToken) return resolve();
             await playBlobAudio(blob, myToken);
           } else {
+            // 瀏覽器真人神經網路語音（原音高 pitch=1.0）
             if (!("speechSynthesis" in window)) throw new Error("瀏覽器不支援語音");
             await new Promise((res) => {
               const utter = new SpeechSynthesisUtterance(cleanText);
@@ -1046,7 +1079,6 @@
     }
 
     function testSampleVoice() {
-      hasUserInteracted = true;
       speakText("おはようございます。今日も一緒に日本語を勉強しましょう。");
     }
 
@@ -1094,133 +1126,178 @@
     }
 
     function onFilterChange() {
-      hasUserInteracted = true;
+      stopAutoPlay();
       filterCat = document.getElementById("categorySelect").value;
       filterStatus = document.getElementById("statusSelect").value;
-      if (currentMode === "listen") rebuildDeck();
-      else if (currentMode === "quiz") nextQuizQuestion();
-      else renderListMode();
+      if (currentMode === "flash") {
+        rebuildDeck();
+      } else if (currentMode === "quiz") {
+        nextQuizQuestion();
+      } else {
+        renderListMode();
+      }
     }
 
     function switchMode(mode) {
-      hasUserInteracted = true;
+      stopAutoPlay();
       stopSpeaking();
       currentMode = mode;
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       document.getElementById(`tab-${mode}`).classList.add("active");
-      if (mode === "listen") rebuildDeck();
+      if (mode === "flash") rebuildDeck();
       else if (mode === "quiz") nextQuizQuestion();
       else renderListMode();
     }
 
     // ==========================================
-    // 5. 模式一：聽力盲聽練習（取代翻卡）
+    // 5. 模式一：3D 翻卡背單字（翻卡即發音）
     // ==========================================
     function rebuildDeck() {
       deckList = getFilteredVocab();
-      // 預設先隨機洗牌一次，避免只按順序背而失去聽力挑戰性
-      for (let i = deckList.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deckList[i], deckList[j]] = [deckList[j], deckList[i]];
-      }
       deckIndex = 0;
-      isRevealed = false;
-      dictationInputVal = "";
-      dictationResult = null;
-      renderListenMode();
-      if (hasUserInteracted && deckList.length > 0) {
-        setTimeout(() => playCurrentListenAudio(), 150);
-      }
+      isFlipped = false;
+      renderFlashMode();
     }
 
     function shuffleDeck() {
-      hasUserInteracted = true;
+      stopAutoPlay();
       for (let i = deckList.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deckList[i], deckList[j]] = [deckList[j], deckList[i]];
       }
       deckIndex = 0;
-      isRevealed = false;
-      dictationInputVal = "";
-      dictationResult = null;
-      renderListenMode();
-      setTimeout(() => playCurrentListenAudio(), 150);
+      isFlipped = false;
+      renderFlashMode();
     }
 
-    function playCurrentListenAudio(customRate = null) {
-      hasUserInteracted = true;
-      const item = deckList[deckIndex];
-      if (!item) return;
-      const targetText = listenLevel === "sentence" ? item.exJp : item.kana;
-      speakText(targetText, customRate);
-    }
-
-    function setListenLevel(lvl) {
-      hasUserInteracted = true;
-      listenLevel = lvl;
-      isRevealed = false;
-      dictationInputVal = "";
-      dictationResult = null;
-      renderListenMode();
-      setTimeout(() => playCurrentListenAudio(), 150);
-    }
-
-    function getAcceptedAnswers(item) {
-      const set = new Set();
-      const norm = s => (s || "").trim().replace(/[\s　。、！？!?～~]/g, "");
-      set.add(norm(item.kana));
-      const noParen = norm(item.word.replace(/（.*?）/g, ""));
-      if (noParen) set.add(noParen);
-      const fullNoBracket = norm(item.word.replace(/[（）]/g, ""));
-      if (fullNoBracket) set.add(fullNoBracket);
-      const match = item.word.match(/（(.*?)）/);
-      if (match && match[1]) {
-        match[1].split("／").forEach(part => {
-          const p = norm(part);
-          if (p && p !== "な") set.add(p);
-        });
-      }
-      return [...set].filter(Boolean);
-    }
-
-    function checkDictation() {
-      hasUserInteracted = true;
-      const item = deckList[deckIndex];
-      if (!item) return;
-      const inp = document.getElementById("dictationInput");
-      const raw = inp ? inp.value : dictationInputVal;
-      const cleaned = raw.trim().replace(/[\s　。、！？!?～~]/g, "");
-      if (!cleaned) {
-        revealAnswer();
+    function renderFlashMode() {
+      const container = document.getElementById("modeContent");
+      if (deckList.length === 0) {
+        container.innerHTML = `<div class="panel" style="text-align:center; padding:40px;">目前篩選條件下沒有單字喔！請切換其他分類或狀態。</div>`;
         return;
       }
-      const accepted = getAcceptedAnswers(item);
-      const ok = accepted.includes(cleaned);
-      dictationResult = { ok, userText: raw };
-      if (!ok) {
-        progressMap[item.id] = "review";
-        saveProgress();
+      const item = deckList[deckIndex];
+      const st = progressMap[item.id];
+      const stBadge = st === "mastered"
+        ? `<span class="pill green">✅ 已熟記</span>`
+        : st === "review"
+        ? `<span class="pill amber">🔁 待複習</span>`
+        : `<span class="pill">第 ${deckIndex + 1} / ${deckList.length} 張</span>`;
+
+      let frontMain = item.word;
+      let frontSub = `<div class="word-kana">${item.kana}</div>`;
+      if (displayScriptMode === "kanji") {
+        frontSub = `<div class="word-kana" style="color:var(--muted); font-size:0.9rem;">（已隱藏假名・翻卡揭曉讀音與發音）</div>`;
+      } else if (displayScriptMode === "kana") {
+        frontMain = item.kana;
+        frontSub = "";
       }
-      isRevealed = true;
-      renderListenMode();
+
+      container.innerHTML = `
+        <div class="panel" style="padding:10px 14px;">
+          <div class="panel-row">
+            <div class="control-group">
+              <label>顯示：
+                <select onchange="displayScriptMode=this.value; renderFlashMode();">
+                  <option value="both" ${displayScriptMode==="both"?"selected":""}>漢字＋假名</option>
+                  <option value="kanji" ${displayScriptMode==="kanji"?"selected":""}>只看漢字（自我考讀音）</option>
+                  <option value="kana" ${displayScriptMode==="kana"?"selected":""}>只看假名</option>
+                </select>
+              </label>
+              <label><input type="checkbox" ${autoSpeakOnFlip?"checked":""} onchange="autoSpeakOnFlip=this.checked"> 翻卡自動發音</label>
+              <label><input type="checkbox" ${autoSpeakExample?"checked":""} onchange="autoSpeakExample=this.checked"> 翻卡連讀例句</label>
+            </div>
+            <div class="control-group">
+              <button class="btn" onclick="shuffleDeck()">🔀 洗牌</button>
+              <button class="btn ${autoPlayLoopRunning ? 'active-toggle' : 'accent'}" onclick="toggleAutoPlay()">
+                ${autoPlayLoopRunning ? "⏹ 停止輪播" : "▶ 自動輪播背單字"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard-stage">
+          <div class="flashcard ${isFlipped ? 'is-flipped' : ''}" id="flashcardEl" onclick="flipCard()">
+            <!-- 正面 -->
+            <div class="card-face">
+              <div class="card-top-meta">
+                <span class="cat-badge">${item.cat}</span>
+                <span>${stBadge}</span>
+              </div>
+              <div class="card-center">
+                <div class="word-main">${frontMain}</div>
+                ${frontSub}
+                <div class="word-note">${item.note}</div>
+              </div>
+              <div class="card-bottom-actions">
+                <button class="btn accent" onclick="event.stopPropagation(); speakText('${item.kana}')">🔊 聽單字發音</button>
+                <span class="flip-hint">點擊卡片或按 [空白鍵] 翻面看解答＋發音</span>
+              </div>
+            </div>
+
+            <!-- 背面 -->
+            <div class="card-face card-back">
+              <div class="card-top-meta">
+                <span class="cat-badge">${item.cat}・${item.note}</span>
+                <span>第 ${deckIndex + 1} / ${deckList.length} 張</span>
+              </div>
+              <div class="card-center">
+                <div class="meaning-zh">${item.zh}</div>
+                <div class="back-jp-small"><b>${item.word}</b>（${item.kana}）</div>
+                <div class="example-box" onclick="event.stopPropagation()">
+                  <div class="ex-jp">${item.exJp}</div>
+                  <div class="ex-zh">${item.exZh}</div>
+                  <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn accent" onclick="speakText('${item.kana}')">🔊 唸單字</button>
+                    <button class="btn" onclick="speakText('${item.exJp.replace(/'/g, "\\'")}')">🔊 唸例句</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-bottom-actions" onclick="event.stopPropagation()">
+                <div style="display:flex; gap:8px;">
+                  <button class="btn success" onclick="markCard(${item.id}, 'mastered')">✅ 我會了（熟記）</button>
+                  <button class="btn warning" onclick="markCard(${item.id}, 'review')">🔁 待複習</button>
+                </div>
+                <span class="flip-hint" onclick="flipCard()" style="cursor:pointer;">↺ 翻回正面</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-deck">
+          <button class="btn" onclick="moveDeck(-1)">⬅ 上一張</button>
+          <span style="font-size:0.86rem; color:var(--muted);">快捷鍵：空白鍵 翻面｜R 重聽｜← → 換卡</span>
+          <button class="btn primary" onclick="moveDeck(1)">下一張 ➡</button>
+        </div>
+      `;
     }
 
-    function revealAnswer() {
-      hasUserInteracted = true;
-      isRevealed = true;
-      renderListenMode();
+    async function flipCard() {
+      isFlipped = !isFlipped;
+      const el = document.getElementById("flashcardEl");
+      if (el) el.classList.toggle("is-flipped", isFlipped);
+
+      if (isFlipped && autoSpeakOnFlip) {
+        const item = deckList[deckIndex];
+        if (item) {
+          await speakText(item.kana);
+          if (autoSpeakExample && isFlipped && deckList[deckIndex]?.id === item.id) {
+            setTimeout(() => {
+              if (isFlipped && deckList[deckIndex]?.id === item.id) {
+                speakText(item.exJp);
+              }
+            }, 350);
+          }
+        }
+      }
     }
 
     function moveDeck(step) {
-      hasUserInteracted = true;
       if (deckList.length === 0) return;
       stopSpeaking();
       deckIndex = (deckIndex + step + deckList.length) % deckList.length;
-      isRevealed = false;
-      dictationInputVal = "";
-      dictationResult = null;
-      renderListenMode();
-      setTimeout(() => playCurrentListenAudio(), 150);
+      isFlipped = false;
+      renderFlashMode();
     }
 
     function markCard(id, status) {
@@ -1229,157 +1306,67 @@
       moveDeck(1);
     }
 
-    function renderListenMode() {
-      const container = document.getElementById("modeContent");
-      if (deckList.length === 0) {
-        container.innerHTML = `<div class="panel" style="text-align:center; padding:40px;">目前篩選條件下沒有單字喔！請切換其他分類或狀態。</div>`;
+    function stopAutoPlay() {
+      autoPlayLoopRunning = false;
+      autoPlayToken++;
+    }
+
+    async function toggleAutoPlay() {
+      if (autoPlayLoopRunning) {
+        stopAutoPlay();
+        stopSpeaking();
+        renderFlashMode();
         return;
       }
+      autoPlayLoopRunning = true;
+      const myLoop = ++autoPlayToken;
+      renderFlashMode();
 
-      const item = deckList[deckIndex];
-      const st = progressMap[item.id];
-      const stBadge = st === "mastered"
-        ? `<span class="pill green">✅ 已熟記</span>`
-        : st === "review"
-        ? `<span class="pill amber">🔁 待複習</span>`
-        : `<span class="pill">第 ${deckIndex + 1} / ${deckList.length} 題</span>`;
+      while (autoPlayLoopRunning && myLoop === autoPlayToken && currentMode === "flash") {
+        const item = deckList[deckIndex];
+        if (!item) break;
+        isFlipped = false;
+        renderFlashMode();
+        await speakText(item.kana);
+        await new Promise(r => setTimeout(r, 900));
+        if (!autoPlayLoopRunning || myLoop !== autoPlayToken) break;
 
-      const modeDesc = listenLevel === "sentence"
-        ? "🔥 進階實戰：聽完整日語例句，挑戰能不能直接聽懂句意！"
-        : listenLevel === "dictation"
-        ? "⌨️ 聽寫特訓：聽發音後輸入日文（假名或漢字），按 Enter 批改！"
-        : "🎧 單字盲聽：不看文字純聽發音，想出中文意思後再揭曉解答！";
+        isFlipped = true;
+        const el = document.getElementById("flashcardEl");
+        if (el) el.classList.add("is-flipped");
+        await speakText(item.exJp);
+        await new Promise(r => setTimeout(r, 1100));
+        if (!autoPlayLoopRunning || myLoop !== autoPlayToken) break;
 
-      let centerHTML = "";
-      if (!isRevealed) {
-        const dictationBox = listenLevel === "dictation" ? `
-          <div class="dictation-area">
-            <input type="text" id="dictationInput" class="dictation-input"
-              placeholder="輸入聽到的假名或漢字..."
-              value="${dictationInputVal.replace(/"/g, '&quot;')}"
-              oninput="dictationInputVal=this.value"
-              onkeydown="if(event.key==='Enter'){ event.preventDefault(); checkDictation(); }" />
-            <button class="btn primary" onclick="checkDictation()">檢查答案</button>
-          </div>
-        ` : "";
-
-        centerHTML = `
-          <div class="blind-center">
-            <div class="audio-hero">
-              <div class="wave-icon">🎧</div>
-              <div style="font-size:0.95rem; color:#0369a1; font-weight:600;">${modeDesc}</div>
-              <div class="audio-btn-group">
-                <button class="btn accent btn-big-audio" onclick="playCurrentListenAudio()">🔊 播放聽力題目</button>
-                <button class="btn btn-big-audio" onclick="playCurrentListenAudio(0.75)">🐢 0.75x 慢速重聽</button>
-              </div>
-              ${dictationBox}
-            </div>
-            <div style="margin-top:18px;">
-              <button class="btn primary" style="padding:10px 26px; font-size:1rem;" onclick="revealAnswer()">👁️ 揭曉解答與例句</button>
-            </div>
-          </div>
-        `;
-      } else {
-        const dictFeedback = dictationResult ? `
-          <div class="dictation-result ${dictationResult.ok ? 'ok' : 'bad'}">
-            ${dictationResult.ok
-              ? `✅ 聽寫正確！您輸入的「${dictationResult.userText}」完全正確！`
-              : `❌ 聽寫有誤（您輸入：「${dictationResult.userText}」），已自動加入待複習清單。`}
-          </div>
-        ` : "";
-
-        centerHTML = `
-          <div class="answer-reveal-box">
-            ${dictFeedback}
-            <div class="meaning-zh" style="margin-top:10px;">${item.zh}</div>
-            <div class="word-revealed">${item.word}</div>
-            <div class="kana-revealed">${item.kana}　<span class="cat-badge">${item.note}</span></div>
-            <div class="example-box">
-              <div class="ex-jp">${item.exJp}</div>
-              <div class="ex-zh">${item.exZh}</div>
-              <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn accent" onclick="speakText('${item.kana}')">🔊 唸單字</button>
-                <button class="btn" onclick="speakText('${item.exJp.replace(/'/g, "\\'")}')">🔊 唸例句</button>
-                <button class="btn" onclick="speakText('${item.exJp.replace(/'/g, "\\'")}', 0.75)">🐢 慢速例句</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      const bottomHTML = isRevealed
-        ? `
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button class="btn success" onclick="markCard(${item.id}, 'mastered')">✅ 聽懂了（熟記）</button>
-            <button class="btn warning" onclick="markCard(${item.id}, 'review')">🔁 沒聽懂（待複習）</button>
-          </div>
-          <button class="btn" onclick="isRevealed=false; renderListenMode();">↺ 回到盲聽</button>
-        `
-        : `
-          <span style="font-size:0.84rem; color:var(--muted);">提示：試著不看文字直接反應意思，聽不懂可點慢速重聽</span>
-          <span></span>
-        `;
-
-      container.innerHTML = `
-        <div class="panel" style="padding:10px 14px;">
-          <div class="panel-row">
-            <div class="control-group">
-              <b>聽力難度：</b>
-              <button class="btn ${listenLevel==='word'?'primary':''}" onclick="setListenLevel('word')">🎧 單字盲聽</button>
-              <button class="btn ${listenLevel==='sentence'?'primary':''}" onclick="setListenLevel('sentence')">🔥 整句例句盲聽</button>
-              <button class="btn ${listenLevel==='dictation'?'primary':''}" onclick="setListenLevel('dictation')">⌨️ 聽寫拼字</button>
-            </div>
-            <div class="control-group">
-              <button class="btn" onclick="shuffleDeck()">🔀 重新洗牌</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="listen-stage">
-          <div class="listen-card ${isRevealed ? 'revealed' : ''}">
-            <div class="card-top-meta">
-              <span class="cat-badge">${item.cat}</span>
-              <span>${stBadge}</span>
-            </div>
-            ${centerHTML}
-            <div class="card-bottom-actions">${bottomHTML}</div>
-          </div>
-        </div>
-
-        <div class="nav-deck">
-          <button class="btn" onclick="moveDeck(-1)">⬅ 上一題</button>
-          <span style="font-size:0.85rem; color:var(--muted);">快捷鍵：R 重聽｜空白鍵 揭曉答案｜← → 換題</span>
-          <button class="btn primary" onclick="moveDeck(1)">下一題（自動播放） ➡</button>
-        </div>
-      `;
-
-      if (!isRevealed && listenLevel === "dictation") {
-        setTimeout(() => document.getElementById("dictationInput")?.focus(), 50);
+        deckIndex = (deckIndex + 1) % deckList.length;
       }
     }
 
+    // 鍵盤快捷鍵
     document.addEventListener("keydown", (e) => {
-      if (currentMode !== "listen") return;
+      if (currentMode !== "flash") return;
       const tag = document.activeElement?.tagName;
       if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
 
       if (e.code === "Space") {
         e.preventDefault();
-        if (!isRevealed) revealAnswer();
-        else moveDeck(1);
+        flipCard();
       } else if (e.code === "ArrowRight") {
         e.preventDefault();
+        stopAutoPlay();
         moveDeck(1);
       } else if (e.code === "ArrowLeft") {
         e.preventDefault();
+        stopAutoPlay();
         moveDeck(-1);
       } else if (e.key === "r" || e.key === "R") {
-        playCurrentListenAudio();
+        const item = deckList[deckIndex];
+        if (item) speakText(item.kana);
       }
     });
 
     // ==========================================
-    // 6. 模式二：四選一測驗（聽音辨字／看字）
+    // 6. 模式二：互動測驗練習（看字／聽音）
     // ==========================================
     function nextQuizQuestion() {
       const pool = getFilteredVocab();
@@ -1390,6 +1377,7 @@
       }
 
       const target = pool[Math.floor(Math.random() * pool.length)];
+      // 優先從同分類抓干擾項，不夠再從全題庫補
       const sameCatPool = VOCAB.filter(v => v.id !== target.id && v.cat === target.cat);
       const otherPool = VOCAB.filter(v => v.id !== target.id && v.cat !== target.cat);
       const distractors = [];
@@ -1409,7 +1397,7 @@
       quizUserPick = null;
 
       renderQuizMode();
-      if (quizType === "listen" && hasUserInteracted) {
+      if (quizType === "listen") {
         setTimeout(() => speakText(quizItem.kana), 150);
       }
     }
@@ -1422,7 +1410,7 @@
       if (quizType === "jp2zh") {
         promptHTML = `
           <div class="quiz-prompt-big">${quizItem.word}</div>
-          <div class="quiz-prompt-sub">${quizItem.kana}　<button class="btn" style="padding:3px 8px; font-size:0.8rem;" onclick="hasUserInteracted=true; speakText('${quizItem.kana}')">🔊 發音</button></div>
+          <div class="quiz-prompt-sub">${quizItem.kana}　<button class="btn" style="padding:3px 8px; font-size:0.8rem;" onclick="speakText('${quizItem.kana}')">🔊 發音</button></div>
         `;
       } else if (quizType === "zh2jp") {
         promptHTML = `
@@ -1431,11 +1419,8 @@
         `;
       } else {
         promptHTML = `
-          <div style="margin-bottom:10px; font-size:1rem; color:var(--muted);">請聽發音，選出正確的單字與中文意思：</div>
-          <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-            <button class="btn accent" style="font-size:1.02rem; padding:10px 20px;" onclick="hasUserInteracted=true; speakText('${quizItem.kana}')">🔊 播放發音</button>
-            <button class="btn" onclick="hasUserInteracted=true; speakText('${quizItem.kana}', 0.75)">🐢 慢速播放</button>
-          </div>
+          <div style="margin-bottom:8px; font-size:1rem; color:var(--muted);">請聽發音，選出正確的單字與中文意思：</div>
+          <button class="btn accent" style="font-size:1.05rem; padding:10px 20px;" onclick="speakText('${quizItem.kana}')">🔊 再聽一次發音</button>
         `;
       }
 
@@ -1466,9 +1451,9 @@
           <div class="panel-row">
             <div class="control-group">
               <b>練習題型：</b>
-              <button class="btn ${quizType==='listen'?'primary':''}" onclick="hasUserInteracted=true; quizType='listen'; nextQuizQuestion();">🎧 聽音辨字</button>
-              <button class="btn ${quizType==='jp2zh'?'primary':''}" onclick="hasUserInteracted=true; quizType='jp2zh'; nextQuizQuestion();">看日文選中文</button>
-              <button class="btn ${quizType==='zh2jp'?'primary':''}" onclick="hasUserInteracted=true; quizType='zh2jp'; nextQuizQuestion();">看中文選日文</button>
+              <button class="btn ${quizType==='jp2zh'?'primary':''}" onclick="quizType='jp2zh'; nextQuizQuestion();">看日文選中文</button>
+              <button class="btn ${quizType==='zh2jp'?'primary':''}" onclick="quizType='zh2jp'; nextQuizQuestion();">看中文選日文</button>
+              <button class="btn ${quizType==='listen'?'primary':''}" onclick="quizType='listen'; nextQuizQuestion();">🎧 聽音辨字</button>
             </div>
             <div class="control-group">
               <span class="pill">已測 ${quizTotal} 題</span>
@@ -1485,7 +1470,7 @@
           <div class="quiz-feedback ${quizAnswered ? 'show ' + (isRight ? 'ok' : 'bad') : ''}">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <b>${isRight ? "✅ 答對了！" : `❌ 答錯了！正確答案是：${quizItem.word}（${quizItem.kana}）＝ ${quizItem.zh}（已自動加入待複習）`}</b>
-              <button class="btn primary" onclick="hasUserInteracted=true; nextQuizQuestion()">下一題 ➡</button>
+              <button class="btn primary" onclick="nextQuizQuestion()">下一題 ➡</button>
             </div>
             <div class="example-box">
               <div class="ex-jp">${quizItem.exJp}</div>
@@ -1502,7 +1487,6 @@
 
     function answerQuiz(idx) {
       if (quizAnswered) return;
-      hasUserInteracted = true;
       quizAnswered = true;
       quizUserPick = idx;
       quizTotal++;
@@ -1520,7 +1504,7 @@
     }
 
     // ==========================================
-    // 7. 模式三：單字總表一覽
+    // 7. 模式三：單字總表一覽（搜尋＋一點即唸）
     // ==========================================
     function renderListMode() {
       const container = document.getElementById("modeContent");
