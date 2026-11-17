@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JLPT N5 單字聽力練習</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+        header p {
+            margin: 0;
+            color: #bdc3c7;
+        }
+        .nav-back {
+            display: inline-block;
+            margin: 1rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .nav-back:hover {
+            text-decoration: underline;
+        }
+        main {
+            max-width: 800px;
+            margin: 1rem auto 3rem auto;
+            padding: 0 1rem;
+        }
+        .word-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-left: 5px solid var(--accent-color);
+        }
+        .word-info h3 {
+            margin: 0 0 0.3rem 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        .word-info .kana {
+            color: #e67e22;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .word-info .meaning {
+            color: #666;
+            font-size: 1rem;
+        }
+        .btn-speak {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .btn-speak:hover {
+            background-color: #c0392b;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #e9ecef;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>N5 單字聽力練習</h1>
+        <p>點擊右側按鈕聆聽日語發音，強化您的聽力與記憶！</p>
+    </header>
+
+    <div style="max-width: 800px; margin: 0 auto;">
+        <a href="index.html" class="nav-back">← 返回首頁</a>
+    </div>
+
+    <main id="word-list">
+        <!-- 單字卡片會透過 JavaScript 自動載入或直接在這裡呈現 -->
+        <div class="word-card">
+            <div class="word-info">
+                <h3>先生</h3>
+                <div class="kana">せんせい (sensei)</div>
+                <div class="meaning">老師、醫生</div>
+            </div>
+            <button class="btn-speak" onclick="speak('先生')">🔊 播放發音</button>
+        </div>
+
+        <div class="word-card">
+            <div class="word-info">
+                <h3>学生</h3>
+                <div class="kana">がくせい (gakusei)</div>
+                <div class="meaning">學生</div>
+            </div>
+            <button class="btn-speak" onclick="speak('学生')">🔊 播放發音</button>
+        </div>
+
+        <div class="word-card">
+            <div class="word-info">
+                <h3>日本</h3>
+                <div class="kana">にほん (nihon)</div>
+                <div class="meaning">日本</div>
+            </div>
+            <button class="btn-speak" onclick="speak('日本')">🔊 播放發音</button>
+        </div>
+
+        <div class="word-card">
+            <div class="word-info">
+                <h3>水</h3>
+                <div class="kana">みず (mizu)</div>
+                <div class="meaning">水</div>
+            </div>
+            <button class="btn-speak" onclick="speak('水')">🔊 播放發音</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 台灣英里留學社 - JLPT 學習平台 All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP'; // 設定為日語發音
+                utterance.rate = 0.9;     // 稍微放慢語速，適合學習聽力
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('您的瀏覽器不支援語音播放功能。');
+            }
+        }
+    </script>
+
+</body>
+</html>
