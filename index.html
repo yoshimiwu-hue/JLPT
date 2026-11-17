@@ -45,10 +45,22 @@
             padding: 0 1rem;
             box-sizing: border-box;
         }
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         .card {
             background-color: var(--card-bg);
@@ -106,31 +118,35 @@
     </header>
 
     <main>
+        <!-- N5 專區 -->
+        <h2 class="section-title" style="border-color: #e74c3c;">🎯 N5 基礎級別</h2>
         <div class="grid-container">
-            <!-- N5 區塊 -->
             <div class="card" style="border-left-color: #e74c3c;">
                 <div>
                     <h3>N5 測驗</h3>
                     <p>基礎文法、文字與讀解綜合模擬測驗。</p>
                 </div>
-                <a href="n5-test.html" class="btn">開始測驗</a>
+                <a href="n5/test/index.html" class="btn" style="background-color: #e74c3c;">開始測驗</a>
             </div>
 
             <div class="card" style="border-left-color: #e74c3c;">
                 <div>
                     <h3>N5 單字聽力練習</h3>
-                    <p>核心單字與日常情境聽力互動練習。</p>
+                    <p>核心單字、真人語音盲聽與聽寫特訓。</p>
                 </div>
-                <a href="n5-listening.html" class="btn">開始練習</a>
+                <a href="n5/listening/index.html" class="btn" style="background-color: #e74c3c;">開始練習</a>
             </div>
+        </div>
 
-            <!-- N4 區塊 -->
+        <!-- N4 專區 -->
+        <h2 class="section-title" style="border-color: #f39c12;">🚀 N4 進階級別</h2>
+        <div class="grid-container">
             <div class="card" style="border-left-color: #f39c12;">
                 <div>
                     <h3>N4 測驗</h3>
                     <p>進階基礎文法與實用閱讀能力測驗。</p>
                 </div>
-                <a href="n4-test.html" class="btn">開始測驗</a>
+                <a href="n4/test/index.html" class="btn" style="background-color: #f39c12;">開始測驗</a>
             </div>
 
             <div class="card" style="border-left-color: #f39c12;">
@@ -138,24 +154,7 @@
                     <h3>N4 單字聽力練習</h3>
                     <p>生活常用單字與短句聽力強化訓練。</p>
                 </div>
-                <a href="n4-listening.html" class="btn">開始練習</a>
-            </div>
-
-            <!-- N3 區塊 -->
-            <div class="card" style="border-left-color: #27ae60;">
-                <div>
-                    <h3>N3 測驗</h3>
-                    <p>中級實用文法、文章理解與綜合測驗。</p>
-                </div>
-                <a href="n3-test.html" class="btn">開始測驗</a>
-            </div>
-
-            <div class="card" style="border-left-color: #27ae60;">
-                <div>
-                    <h3>N3 單字聽力練習</h3>
-                    <p>中級核心詞彙、語調與聽解應對練習。</p>
-                </div>
-                <a href="n3-listening.html" class="btn">開始練習</a>
+                <a href="n4/listening/index.html" class="btn" style="background-color: #f39c12;">開始練習</a>
             </div>
         </div>
     </main>
