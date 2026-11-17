@@ -1,1 +1,1606 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLPT N5 聽力實戰與全單字練習（模擬真人發音版）</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent: #0284c7;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+      padding: 12px 16px;
+    }
+
+    .topbar-inner { max-width: 980px; margin: 0 auto; }
+
+    .topbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--primary-dark);
+    }
+
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+    .pill.green { background: var(--success-bg); color: var(--success); }
+    .pill.amber { background: var(--warning-bg); color: var(--warning); }
+
+    .mode-tabs {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tab-group { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tab-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { background: #f8fafc; }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 18px auto 60px;
+      padding: 0 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .panel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.88rem;
+    }
+
+    select, input[type="text"], input[type="password"] {
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 0.88rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .btn {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .btn:hover { background: #f1f5f9; }
+    .btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn.primary:hover { background: var(--primary-dark); }
+    .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn.accent:hover { background: #0369a1; }
+    .btn.success { background: var(--success-bg); color: var(--success); border-color: #86efac; }
+    .btn.warning { background: var(--warning-bg); color: var(--warning); border-color: #fde68a; }
+    .btn.active-toggle { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+    .voice-drawer {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.86rem;
+    }
+    .voice-drawer.open { display: block; }
+
+    .voice-tip {
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      color: #0369a1;
+      font-size: 0.82rem;
+    }
+
+    /* =========================
+       聽力盲聽練習卡片樣式
+       ========================= */
+    .listen-stage {
+      max-width: 700px;
+      margin: 16px auto;
+    }
+
+    .listen-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 24px 26px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .listen-card.revealed {
+      border-color: #93c5fd;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .card-top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .cat-badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .blind-center {
+      text-align: center;
+      margin: auto 0;
+      padding: 18px 0;
+    }
+
+    .audio-hero {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 16px;
+      padding: 22px 28px;
+      width: 100%;
+    }
+
+    .wave-icon {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .audio-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-big-audio {
+      padding: 11px 22px;
+      font-size: 1rem;
+      border-radius: 10px;
+    }
+
+    .dictation-area {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dictation-input {
+      padding: 10px 14px;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      width: 260px;
+      max-width: 100%;
+      text-align: center;
+    }
+    .dictation-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .dictation-result {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.94rem;
+    }
+    .dictation-result.ok { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+    .dictation-result.bad { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
+
+    .answer-reveal-box {
+      text-align: center;
+      padding: 10px 0;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .meaning-zh {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .word-revealed {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .kana-revealed {
+      font-size: 1.05rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .example-box {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .ex-jp { font-size: 1.04rem; font-weight: 600; color: #0f172a; }
+    .ex-zh { font-size: 0.9rem; color: #475569; margin-top: 3px; }
+
+    .card-bottom-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .nav-deck {
+      max-width: 700px;
+      margin: 14px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* =========================
+       四選一測驗模式樣式
+       ========================= */
+    .quiz-card {
+      max-width: 720px;
+      margin: 16px auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .quiz-question-box {
+      text-align: center;
+      padding: 18px 10px;
+      margin-bottom: 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .quiz-prompt-big { font-size: 2rem; font-weight: 800; color: #0f172a; }
+    .quiz-prompt-sub { font-size: 1rem; color: var(--accent); margin-top: 4px; }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .quiz-options { grid-template-columns: 1fr; }
+    }
+
+    .q-opt {
+      padding: 13px 15px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .q-opt:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); }
+    .q-opt-num {
+      width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9;
+      font-weight: 700; font-size: 0.85rem; display: inline-flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .q-opt.correct { border-color: var(--success); background: var(--success-bg); color: #14532d; font-weight: 700; }
+    .q-opt.correct .q-opt-num { background: var(--success); color: #fff; }
+    .q-opt.wrong { border-color: var(--danger); background: var(--danger-bg); color: #7f1d1d; }
+    .q-opt.wrong .q-opt-num { background: var(--danger); color: #fff; }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      display: none;
+    }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.ok { background: var(--success-bg); border: 1px solid #bbf7d0; }
+    .quiz-feedback.bad { background: var(--danger-bg); border: 1px solid #fecaca; }
+
+    /* =========================
+       單字總表模式樣式
+       ========================= */
+    .vocab-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+      gap: 12px;
+    }
+
+    .vocab-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+    }
+
+    .vocab-item.mastered { border-left: 4px solid var(--success); }
+    .vocab-item.review { border-left: 4px solid var(--warning); }
+
+    .vi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .vi-word { font-size: 1.25rem; font-weight: 800; color: #0f172a; }
+    .vi-kana { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+    .vi-zh { font-size: 1rem; font-weight: 700; color: var(--primary-dark); margin-top: 2px; }
+    .vi-ex { font-size: 0.84rem; color: #475569; background: #f8fafc; padding: 7px 9px; border-radius: 6px; }
+    .vi-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-row">
+        <div class="brand">
+          <h1>🎧 JLPT N5 聽力實戰與全單字練習（255 詞・模擬真人發音）</h1>
+        </div>
+        <div class="stats-bar">
+          <span class="pill" id="totalCountPill">總單字 255</span>
+          <span class="pill green" id="masteredPill">✅ 已熟記 0</span>
+          <span class="pill amber" id="reviewPill">🔁 待複習 0</span>
+        </div>
+      </div>
+
+      <div class="mode-tabs">
+        <div class="tab-group">
+          <button class="tab-btn active" id="tab-listen" onclick="switchMode('listen')">🎧 聽力盲聽練習</button>
+          <button class="tab-btn" id="tab-quiz" onclick="switchMode('quiz')">✍️ 四選一測驗</button>
+          <button class="tab-btn" id="tab-list" onclick="switchMode('list')">📖 單字總表一覽</button>
+        </div>
+        <div class="tab-group">
+          <button class="btn" onclick="toggleVoiceDrawer()">🎙️ 模擬真人發音設定</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-row">
+        <div class="control-group">
+          <label><b>分類篩選：</b>
+            <select id="categorySelect" onchange="onFilterChange()"></select>
+          </label>
+          <label><b>熟記篩選：</b>
+            <select id="statusSelect" onchange="onFilterChange()">
+              <option value="all">全部單字</option>
+              <option value="review">只看「待複習」</option>
+              <option value="unmastered">只看「尚未熟記」</option>
+              <option value="mastered">只看「已熟記」</option>
+            </select>
+          </label>
+        </div>
+        <div class="control-group" id="speakingStatus" style="color:var(--accent); font-weight:600;"></div>
+      </div>
+
+      <div class="voice-drawer" id="voiceDrawer">
+        <div class="control-group" style="margin-bottom:8px;">
+          <label><b>發音引擎：</b>
+            <select id="engineModeSelect" onchange="onEngineChange(this.value)">
+              <option value="browser">免費・瀏覽器真人神經語音（優先鎖定 Natural / Google 日本語）</option>
+              <option value="voicevox">免費・本機 VOICEVOX AI 聲優（需先開啟 VOICEVOX 軟體）</option>
+              <option value="openai">進階・OpenAI 真人主播級 TTS（需 API Key）</option>
+            </select>
+          </label>
+          <label><b>預設語速：</b>
+            <select id="rateSelect">
+              <option value="0.75">0.75x 慢速清晰</option>
+              <option value="0.95" selected>0.95x 真人自然</option>
+              <option value="1.1">1.10x 流利</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="control-group" id="browserVoiceRow">
+          <label><b>日語聲線：</b>
+            <select id="browserVoiceSelect" onchange="selectedVoiceURI = this.value"></select>
+          </label>
+          <button class="btn" onclick="testSampleVoice()">🔊 試聽發音</button>
+        </div>
+
+        <div class="control-group" id="voicevoxRow" style="display:none;">
+          <label><b>VOICEVOX 角色：</b>
+            <select id="voicevoxSpeakerSelect">
+              <option value="2">四国めたん（自然溫柔女聲）</option>
+              <option value="3">ずんだもん（清晰活力聲線）</option>
+              <option value="8">春日部つむぎ（明亮女聲）</option>
+              <option value="13">青山龍星（沉穩男聲）</option>
+              <option value="11">玄野武宏（自然男聲）</option>
+            </select>
+          </label>
+          <button class="btn" onclick="testSampleVoice()">🔊 試聽 VOICEVOX</button>
+        </div>
+
+        <div class="control-group" id="openaiRow" style="display:none;">
+          <label><b>OpenAI API Key：</b>
+            <input type="password" id="openaiKeyInput" placeholder="sk-..." oninput="openAiKey = this.value.trim()" />
+          </label>
+          <label><b>聲線：</b>
+            <select id="openaiVoiceSelect">
+              <option value="nova">Nova（自然女聲）</option>
+              <option value="shimmer">Shimmer（清晰女聲）</option>
+              <option value="onyx">Onyx（沉穩男聲）</option>
+            </select>
+          </label>
+          <button class="btn" onclick="testSampleVoice()">🔊 試聽 AI 語音</button>
+        </div>
+
+        <div class="voice-tip">
+          💡 <b>真人發音小提示：</b>若使用 Windows 電腦，強烈建議以 <b>Microsoft Edge</b> 開啟，系統會自動啟用 <b>★ Microsoft Nanami Online (Natural)</b> 等級的真人神經網路語音，抑揚頓挫最貼近日本真人。
+        </div>
+      </div>
+    </section>
+
+    <div id="modeContent"></div>
+  </main>
+
+  <script>
+    // ==========================================
+    // 1. JLPT N5 核心單字總庫（255 詞，11 大類）
+    // ==========================================
+    const VOCAB_RAW = [
+      // 一、問候與生活用語 (15)
+      [1,"おはようございます","おはようございます","早安（敬語）","問候與生活用語","挨拶","先生、おはようございます。","老師，早安。"],
+      [2,"こんにちは","こんにちは","你好／午安","問候與生活用語","挨拶","田中さん、こんにちは。","田中先生，你好。"],
+      [3,"こんばんは","こんばんは","晚上好（見面）","問候與生活用語","挨拶","皆さん、こんばんは。","各位，晚上好。"],
+      [4,"おやすみなさい","おやすみなさい","晚安（睡前道別）","問候與生活用語","挨拶","もう十時ですね。おやすみなさい。","已經十點了呢，晚安。"],
+      [5,"ありがとうございます","ありがとうございます","謝謝（敬語）","問候與生活用語","挨拶","手伝ってくれて、ありがとうございます。","謝謝你的幫忙。"],
+      [6,"すみません","すみません","不好意思／對不起","問候與生活用語","挨拶","すみません、駅はどこですか。","不好意思，請問車站在哪裡？"],
+      [7,"ごめんなさい","ごめんなさい","對不起（較口語）","問候與生活用語","挨拶","遅れて、ごめんなさい。","遲到了，對不起。"],
+      [8,"いただきます","いただきます","我要開動了","問候與生活用語","挨拶","ご飯を食べる前に、「いただきます」と言います。","吃飯前會說「我要開動了」。"],
+      [9,"ごちそうさまでした","ごちそうさまでした","我吃飽了／謝謝款待","問候與生活用語","挨拶","とても美味しかったです。ごちそうさまでした。","非常好吃，謝謝款待。"],
+      [10,"さようなら","さようなら","再見","問候與生活用語","挨拶","先生、さようなら。また明日。","老師再見，明天見。"],
+      [11,"はじめまして","はじめまして","初次見面","問候與生活用語","挨拶","はじめまして、台湾から来ました。","初次見面，我從台灣來。"],
+      [12,"よろしくお願いします","よろしくおねがいします","請多多指教","問候與生活用語","挨拶","これからよろしくお願いします。","今後請多多指教。"],
+      [13,"いってきます","いってきます","我出門了","問候與生活用語","挨拶","お母さん、学校へ行ってきます。","媽媽，我去上學了（我出門了）。"],
+      [14,"ただいま","ただいま","我回來了","問候與生活用語","挨拶","ただいま帰りました。","我回來了。"],
+      [15,"おかえりなさい","おかえりなさい","歡迎回家","問候與生活用語","挨拶","おかえりなさい。疲れたでしょう。","歡迎回來，累了吧。"],
+
+      // 二、數字・時間・日期 (32)
+      [16,"一（いち）","いち","一（1）","數字・時間・日期","數字","一から十まで数えます。","從一數到十。"],
+      [17,"二（に）","に","二（2）","數字・時間・日期","數字","二番のバスに乗ります。","搭二號公車。"],
+      [18,"三（さん）","さん","三（3）","數字・時間・日期","數字","三時に会いましょう。","三點見面吧。"],
+      [19,"四（よん／し）","よん","四（4）","數字・時間・日期","數字","四月に日本へ行きます。","四月要去日本。"],
+      [20,"五（ご）","ご","五（5）","數字・時間・日期","數字","五分間休みます。","休息五分鐘。"],
+      [21,"六（ろく）","ろく","六（6）","數字・時間・日期","數字","六時に起きます。","六點起床。"],
+      [22,"七（なな／しち）","なな","七（7）","數字・時間・日期","數字","七時に朝ご飯を食べます。","七點吃早餐。"],
+      [23,"八（はち）","はち","八（8）","數字・時間・日期","數字","八時に家を出ます。","八點出門。"],
+      [24,"九（きゅう／く）","きゅう","九（9）","數字・時間・日期","數字","九時から仕事です。","從九點開始上班。"],
+      [25,"十（じゅう）","じゅう","十（10）","數字・時間・日期","數字","十時に寝ます。","十點睡覺。"],
+      [26,"百（ひゃく）","ひゃく","百（100）","數字・時間・日期","數字","このパンは百円です。","這個麵包一百日圓。"],
+      [27,"千（せん）","せん","千（1,000）","數字・時間・日期","數字","千円札を持っています。","我帶著一千日圓紙鈔。"],
+      [28,"万（まん）","まん","萬（10,000）","數字・時間・日期","數字","この時計は一万円です。","這支手錶一萬日圓。"],
+      [29,"一つ","ひとつ","一個（和語計數）","數字・時間・日期","和語計數","りんごを一つください。","請給我一個蘋果。"],
+      [30,"二つ","ふたつ","兩個（和語計數）","數字・時間・日期","和語計數","ケーキを二つ買いました。","買了兩個蛋糕。"],
+      [31,"三つ","みっつ","三個（和語計數）","數字・時間・日期","和語計數","みかんが三つあります。","有三個橘子。"],
+      [32,"四つ","よっつ","四個（和語計數）","數字・時間・日期","和語計數","部屋が四つあります。","有四個房間。"],
+      [33,"五つ","いつつ","五個（和語計數）","數字・時間・日期","和語計數","椅子が五つあります。","有五張椅子。"],
+      [34,"十（とお）","とお","十個（和語計數）","數字・時間・日期","和語計數","全部で十あります。","總共有十個。"],
+      [35,"今日","きょう","今天","數字・時間・日期","時間詞","今日はいい天気ですね。","今天天氣真好呢。"],
+      [36,"明日","あした","明天","數字・時間・日期","時間詞","明日、友達と映画を見ます。","明天要和朋友看電影。"],
+      [37,"昨日","きのう","昨天","數字・時間・日期","時間詞","昨日、図書館で勉強しました。","昨天在圖書館唸書。"],
+      [38,"今週","こんしゅう","這週","數字・時間・日期","時間詞","今週の日曜日は暇です。","這週日我有空。"],
+      [39,"来週","らいしゅう","下週","數字・時間・日期","時間詞","来週、テストがあります。","下週有考試。"],
+      [40,"先週","せんしゅう","上週","數字・時間・日期","時間詞","先週、京都へ旅行しました。","上週去京都旅行了。"],
+      [41,"今月","こんげつ","這個月","數字・時間・日期","時間詞","今月はとても忙しいです。","這個月非常忙碌。"],
+      [42,"来月","らいげつ","下個月","數字・時間・日期","時間詞","来月、日本へ行きます。","下個月要去日本。"],
+      [43,"午前","ごぜん","上午","數字・時間・日期","時間詞","午前九時から働きます。","從上午九點開始工作。"],
+      [44,"午後","ごご","下午","數字・時間・日期","時間詞","午後二時に会いましょう。","下午兩點見面吧。"],
+      [45,"朝","あさ","早上","數字・時間・日期","時間詞","毎朝、コーヒーを飲みます。","每天早上都喝咖啡。"],
+      [46,"昼","ひる","中午／白天","數字・時間・日期","時間詞","昼ご飯はレストランで食べます。","午餐在餐廳吃。"],
+      [47,"夜","よる","晚上／夜晚","數字・時間・日期","時間詞","夜、テレビを見ます。","晚上看電視。"],
+
+      // 三、助數詞・量詞 (12)
+      [48,"～枚","まい","～張／枚（薄片狀）","助數詞・量詞","助數詞","切手を五枚買いました。","買了五張郵票。"],
+      [49,"～本","ほん","～枝／瓶（細長物）","助數詞・量詞","助數詞","ペンを二本ください。","請給我兩枝筆。"],
+      [50,"～冊","さつ","～本／冊（書籍）","助數詞・量詞","助數詞","本を三冊読みました。","讀了三本書。"],
+      [51,"～台","だい","～台／輛（機械車輛）","助數詞・量詞","助數詞","部屋にパソコンが一台あります。","房間裡有一台電腦。"],
+      [52,"～匹","ひき","～隻（小動物）","助數詞・量詞","助數詞","家に猫が二匹います。","家裡有兩隻貓。"],
+      [53,"～頭","とう","～頭（大動物）","助數詞・量詞","助數詞","動物園に象が三頭います。","動物園裡有三頭大象。"],
+      [54,"～羽","わ","～隻（鳥類）","助數詞・量詞","助數詞","木の上に鳥が二羽います。","樹上有兩隻鳥。"],
+      [55,"～人","にん","～個人（人數）","助數詞・量詞","助數詞","家族は四人です。","家裡有四個人。"],
+      [56,"一人","ひとり","一個人","助數詞・量詞","助數詞（特殊）","一人で日本へ行きます。","一個人去日本。"],
+      [57,"二人","ふたり","兩個人","助數詞・量詞","助數詞（特殊）","友達と二人で旅行します。","和朋友兩個人一起旅行。"],
+      [58,"～階","かい","～樓（樓層）","助數詞・量詞","助數詞","トイレは二階にあります。","廁所在二樓。"],
+      [59,"～時間","じかん","～小時（時間長度）","助數詞・量詞","助數詞","毎日二時間勉強します。","每天唸書兩小時。"],
+
+      // 四、人物・家族 (18)
+      [60,"父","ちち","（我的）爸爸","人物・家族","自稱家人","父は会社員です。","我爸爸是上班族。"],
+      [61,"母","はは","（我的）媽媽","人物・家族","自稱家人","母は料理が上手です。","我媽媽很擅長做菜。"],
+      [62,"兄","あに","（我的）哥哥","人物・家族","自稱家人","兄は東京に住んでいます。","我哥哥住在東京。"],
+      [63,"姉","あね","（我的）姊姊","人物・家族","自稱家人","私は姉が一人います。","我有一位姊姊。"],
+      [64,"弟","おとうと","（我的）弟弟","人物・家族","自稱家人","弟は高校生です。","我弟弟是高中生。"],
+      [65,"妹","いもうと","（我的）妹妹","人物・家族","自稱家人","妹は音楽が好きです。","我妹妹喜歡音樂。"],
+      [66,"お父さん","おとうさん","（別人的）爸爸","人物・家族","他稱家人","田中さんのお父さんはお元気ですか。","田中先生的父親身體好嗎？"],
+      [67,"お母さん","おかあさん","（別人的）媽媽","人物・家族","他稱家人","お母さんによろしくお伝えください。","請代我向您母親問好。"],
+      [68,"お兄さん","おにいさん","（別人的）哥哥","人物・家族","他稱家人","山田さんのお兄さんは先生です。","山田先生的哥哥是老師。"],
+      [69,"お姉さん","おねえさん","（別人的）姊姊","人物・家族","他稱家人","お姉さんはとてもきれいですね。","您的姊姊真漂亮呢。"],
+      [70,"私","わたし","我","人物・家族","代名詞","私は学生です。","我是學生。"],
+      [71,"あなた","あなた","你（對熟悉者可省略）","人物・家族","代名詞","あなたの傘はどれですか。","你的傘是哪一把？"],
+      [72,"友達","ともだち","朋友","人物・家族","名詞","友達と映画を見ます。","和朋友看電影。"],
+      [73,"先生","せんせい","老師／醫生","人物・家族","名詞","日本語の先生はとても親切です。","日文老師非常親切。"],
+      [74,"学生","がくせい","學生","人物・家族","名詞","図書館に学生がたくさんいます。","圖書館裡有很多學生。"],
+      [75,"男の人","おとこのひと","男人／男性","人物・家族","名詞","あの男の人は誰ですか。","那位男性是誰？"],
+      [76,"女の人","おんなのひと","女人／女性","人物・家族","名詞","女の人が公園を歩いています。","有位女性正在公園散步。"],
+      [77,"子供","こども","小孩／孩子","人物・家族","名詞","公園で子供が遊んでいます。","小孩正在公園玩耍。"],
+
+      // 五、方位・場所・建築 (24)
+      [78,"右","みぎ","右邊","方位・場所・建築","方位詞","次の角を右に曲がってください。","請在下一個轉角向右轉。"],
+      [79,"左","ひだり","左邊","方位・場所・建築","方位詞","駅の左に銀行があります。","車站的左邊有銀行。"],
+      [80,"上","うえ","上面","方位・場所・建築","方位詞","机の上に本があります。","桌子上面有書。"],
+      [81,"下","した","下面","方位・場所・建築","方位詞","テーブルの下に猫がいます。","桌子下面有貓。"],
+      [82,"前","まえ","前面","方位・場所・建築","方位詞","ホテルの前にバス停があります。","飯店前面有公車站牌。"],
+      [83,"後ろ","うしろ","後面","方位・場所・建築","方位詞","私の後ろに田中さんがいます。","我後面是田中先生。"],
+      [84,"中","なか","裡面","方位・場所・建築","方位詞","鞄の中に財布があります。","包包裡面有錢包。"],
+      [85,"外","そと","外面","方位・場所・建築","方位詞","教室の外で待ってください。","請在教室外面等候。"],
+      [86,"隣","となり","隔壁／旁邊","方位・場所・建築","方位詞","銀行の隣に郵便局があります。","銀行隔壁有郵局。"],
+      [87,"近く","ちかく","附近","方位・場所・建築","方位詞","家の近くにスーパーがあります。","我家附近有超市。"],
+      [88,"ここ","ここ","這裡","方位・場所・建築","指示詞","ここは図書館です。","這裡是圖書館。"],
+      [89,"そこ","そこ","那裡","方位・場所・建築","指示詞","そこに座ってもいいですか。","我可以坐在那裡嗎？"],
+      [90,"あそこ","あそこ","那邊（遠處）","方位・場所・建築","指示詞","あそこに白いビルが見えます。","那邊看得到一棟白色大樓。"],
+      [91,"どこ","どこ","哪裡","方位・場所・建築","疑問詞","トイレはどこですか。","請問廁所在哪裡？"],
+      [92,"学校","がっこう","學校","方位・場所・建築","場所","毎日バスで学校へ行きます。","每天搭公車去學校。"],
+      [93,"図書館","としょかん","圖書館","方位・場所・建築","場所","図書館で本を借ります。","在圖書館借書。"],
+      [94,"駅","えき","車站","方位・場所・建築","場所","駅で友達に会います。","在車站和朋友見面。"],
+      [95,"病院","びょういん","醫院","方位・場所・建築","場所","頭が痛いですから、病院へ行きます。","因為頭痛，所以要去醫院。"],
+      [96,"銀行","ぎんこう","銀行","方位・場所・建築","場所","銀行は九時から三時までです。","銀行從九點開到三點。"],
+      [97,"郵便局","ゆうびんきょく","郵局","方位・場所・建築","場所","郵便局で切手を買います。","在郵局買郵票。"],
+      [98,"部屋","へや","房間","方位・場所・建築","場所","私の部屋は二階にあります。","我的房間在二樓。"],
+      [99,"家","いえ","家／房子","方位・場所・建築","場所","昨日、家にいました。","昨天待在家裡。"],
+      [100,"店","みせ","店／商店","方位・場所・建築","場所","この店の料理はとても美味しいです。","這家店的料理非常好吃。"],
+      [101,"公園","こうえん","公園","方位・場所・建築","場所","日曜日に公園を散歩します。","星期天在公園散步。"],
+
+      // 六、飲食・日常物品 (28)
+      [102,"水","みず","水","飲食・日常物品","飲食","冷たい水をください。","請給我冰水。"],
+      [103,"お茶","おちゃ","茶","飲食・日常物品","飲食","日本のお茶を飲みます。","喝日本茶。"],
+      [104,"牛乳","ぎゅうにゅう","牛奶","飲食・日常物品","飲食","毎朝、牛乳を飲みます。","每天早上喝牛奶。"],
+      [105,"お酒","おさけ","酒","飲食・日常物品","飲食","私はあまりお酒を飲みません。","我不太喝酒。"],
+      [106,"ご飯","ごはん","飯／餐點","飲食・日常物品","飲食","朝ご飯を食べましたか。","吃過早餐了嗎？"],
+      [107,"肉","にく","肉","飲食・日常物品","飲食","鶏肉と牛肉が好きです。","我喜歡雞肉和牛肉。"],
+      [108,"魚","さかな","魚","飲食・日常物品","飲食","魚より肉のほうが好きです。","比起魚我更喜歡肉。"],
+      [109,"野菜","やさい","蔬菜","飲食・日常物品","飲食","毎日、野菜をたくさん食べます。","每天吃很多蔬菜。"],
+      [110,"果物","くだもの","水果","飲食・日常物品","飲食","日本の果物は高いですが美味しいです。","日本的水果很貴但很好吃。"],
+      [111,"りんご","りんご","蘋果","飲食・日常物品","飲食","りんごを三つ買いました。","買了三個蘋果。"],
+      [112,"卵","たまご","雞蛋","飲食・日常物品","飲食","冷蔵庫に卵が五個あります。","冰箱裡有五顆雞蛋。"],
+      [113,"料理","りょうり","料理／菜餚","飲食・日常物品","飲食","日本料理を作ることができます。","我會做日本料理。"],
+      [114,"本","ほん","書","飲食・日常物品","物品","これは私の本です。","這是我的書。"],
+      [115,"辞書","じしょ","字典","飲食・日常物品","物品","新しい日本語の辞書を買いました。","買了新的日文字典。"],
+      [116,"新聞","しんぶん","報紙","飲食・日常物品","物品","父は毎朝新聞を読みます。","爸爸每天早上看報紙。"],
+      [117,"手紙","てがみ","信","飲食・日常物品","物品","母に手紙を書きます。","寫信給媽媽。"],
+      [118,"傘","かさ","雨傘","飲食・日常物品","物品","雨が降っていますから、傘を持ちます。","正在下雨，所以要帶傘。"],
+      [119,"鞄","かばん","包包／書包","飲食・日常物品","物品","重い鞄を持っています。","提著很重的包包。"],
+      [120,"靴","くつ","鞋子","飲食・日常物品","物品","玄関で靴を脱ぎます。","在玄關脫鞋子。"],
+      [121,"鍵","かぎ","鑰匙","飲食・日常物品","物品","部屋の鍵を忘れました。","忘記帶房間鑰匙了。"],
+      [122,"時計","とけい","手錶／時鐘","飲食・日常物品","物品","壁に時計がかかっています。","牆上掛著時鐘。"],
+      [123,"眼鏡","めがね","眼鏡","飲食・日常物品","物品","田中さんは眼鏡をかけています。","田中先生戴著眼鏡。"],
+      [124,"お金","おかね","錢","飲食・日常物品","物品","財布の中にお金がありません。","錢包裡沒有錢。"],
+      [125,"財布","さいふ","錢包","飲食・日常物品","物品","昨日、財布をなくしました。","昨天弄丟了錢包。"],
+      [126,"車","くるま","汽車","飲食・日常物品","交通","父は車で会社へ行きます。","爸爸開車去公司。"],
+      [127,"電車","でんしゃ","電車","飲食・日常物品","交通","電車で学校へ通います。","搭電車去上學。"],
+      [128,"自転車","じてんしゃ","腳踏車","飲食・日常物品","交通","自転車で駅まで行きます。","騎腳踏車到車站。"],
+      [129,"飛行機","ひこうき","飛機","飲食・日常物品","交通","飛行機で日本へ旅行します。","搭飛機去日本旅行。"],
+
+      // 七、科技・外來語 (18)
+      [130,"テレビ","テレビ","電視","科技・外來語","片假名外來語","毎晩、テレビでニュースを見ます。","每天晚上在電視上看新聞。"],
+      [131,"ラジオ","ラジオ","收音機","科技・外來語","片假名外來語","ラジオで日本語を勉強します。","用收音機學日文。"],
+      [132,"パソコン","パソコン","電腦","科技・外來語","片假名外來語","パソコンでレポートを書きます。","用電腦寫報告。"],
+      [133,"スマートフォン","スマートフォン","智慧型手機","科技・外來語","片假名外來語","スマートフォンで写真を撮ります。","用智慧型手機拍照。"],
+      [134,"コーヒー","コーヒー","咖啡","科技・外來語","片假名外來語","コーヒーに砂糖を入れます。","在咖啡裡加糖。"],
+      [135,"ケーキ","ケーキ","蛋糕","科技・外來語","片假名外來語","誕生日にケーキを食べました。","生日那天吃了蛋糕。"],
+      [136,"ホテル","ホテル","飯店／旅館","科技・外來語","片假名外來語","駅の近くのホテルに泊まります。","住在車站附近的飯店。"],
+      [137,"レストラン","レストラン","餐廳","科技・外來語","片假名外來語","友達とレストランで食事します。","和朋友在餐廳吃飯。"],
+      [138,"トイレ","トイレ","廁所","科技・外來語","片假名外來語","すみません、トイレを借りてもいいですか。","不好意思，可以借用廁所嗎？"],
+      [139,"パン","パン","麵包","科技・外來語","片假名外來語","朝、パンと卵を食べます。","早上吃麵包和蛋。"],
+      [140,"カメラ","カメラ","照相機","科技・外來語","片假名外來語","新しいカメラを買いたいです。","我想買新相機。"],
+      [141,"バス","バス","公車","科技・外來語","片假名外來語","バスで空港まで行きます。","搭公車到機場。"],
+      [142,"タクシー","タクシー","計程車","科技・外來語","片假名外來語","時間がないですから、タクシーに乗りましょう。","沒有時間了，我們搭計程車吧。"],
+      [143,"ドア","ドア","門","科技・外來語","片假名外來語","ドアを閉めてください。","請把門關上。"],
+      [144,"テーブル","テーブル","餐桌／桌子","科技・外來語","片假名外來語","テーブルの上に花があります。","餐桌上有花。"],
+      [145,"ペン","ペン","筆","科技・外來語","片假名外來語","青いペンで名前を書いてください。","請用藍筆寫名字。"],
+      [146,"ノート","ノート","筆記本","科技・外來語","片假名外來語","ノートに漢字を書きます。","在筆記本上寫漢字。"],
+      [147,"シャツ","シャツ","襯衫","科技・外來語","片假名外來語","白いシャツを着ています。","穿著白色襯衫。"],
+
+      // 八、自然・動物・身體 (20)
+      [148,"天気","てんき","天氣","自然・動物・身體","自然","明日の天気は晴れです。","明天的天氣是晴天。"],
+      [149,"雨","あめ","雨","自然・動物・身體","自然","昨日、雨が降りました。","昨天下雨了。"],
+      [150,"雪","ゆき","雪","自然・動物・身體","自然","冬に雪が降ります。","冬天會下雪。"],
+      [151,"風","かぜ","風","自然・動物・身體","自然","今日は風が強いですね。","今天風好大呢。"],
+      [152,"山","やま","山","自然・動物・身體","自然","富士山はとても高い山です。","富士山是非常高的山。"],
+      [153,"川","かわ","河川","自然・動物・身體","自然","綺麗な川で泳ぎます。","在乾淨的河裡游泳。"],
+      [154,"海","うみ","海","自然・動物・身體","自然","夏休みに海へ行きたいです。","暑假想去海邊。"],
+      [155,"花","はな","花","自然・動物・身體","自然","春に桜の花が咲きます。","春天櫻花會盛開。"],
+      [156,"木","き","樹木","自然・動物・身體","自然","公園に大きい木があります。","公園裡有大樹。"],
+      [157,"空","そら","天空","自然・動物・身體","自然","空が青いですね。","天空好藍呢。"],
+      [158,"犬","いぬ","狗","自然・動物・身體","動物","犬と公園を散歩します。","和狗狗在公園散步。"],
+      [159,"猫","ねこ","貓","自然・動物・身體","動物","白い猫がいます。","有一隻白貓。"],
+      [160,"鳥","とり","鳥","自然・動物・身體","動物","空に鳥が飛んでいます。","天空有鳥在飛。"],
+      [161,"目","め","眼睛","自然・動物・身體","身體","目が疲れました。","眼睛累了。"],
+      [162,"耳","みみ","耳朵","自然・動物・身體","身體","うさぎは耳が長いです。","兔子的耳朵很長。"],
+      [163,"口","くち","嘴巴","自然・動物・身體","身體","大きい口を開けてください。","請張大嘴巴。"],
+      [164,"手","て","手","自然・動物・身體","身體","ご飯を食べる前に手を洗います。","吃飯前洗手。"],
+      [165,"足","あし","腳／腿","自然・動物・身體","身體","たくさん歩いて、足が痛いです。","走了很多路，腳好痛。"],
+      [166,"頭","あたま","頭","自然・動物・身體","身體","頭が痛いです。","頭痛。"],
+      [167,"体","からだ","身體","自然・動物・身體","身體","体に気をつけてください。","請保重身體。"],
+
+      // 九、核心動詞 (42)
+      [168,"行く（行きます）","いく","去","核心動詞","1類動詞","来月、日本へ行きます。","下個月要去日本。"],
+      [169,"来る（来ます）","くる","來","核心動詞","3類動詞","友達が家へ来ます。","朋友要來我家。"],
+      [170,"帰る（帰ります）","かえる","回家／回去","核心動詞","1類動詞","五時に家へ帰ります。","五點回家。"],
+      [171,"食べる（食べます）","たべる","吃","核心動詞","2類動詞","寿司を食べます。","吃壽司。"],
+      [172,"飲む（飲みます）","のむ","喝","核心動詞","1類動詞","コーヒーを飲みます。","喝咖啡。"],
+      [173,"見る（見ます）","みる","看","核心動詞","2類動詞","テレビを見ます。","看電視。"],
+      [174,"聞く（聞きます）","きく","聽／問","核心動詞","1類動詞","音楽を聞きます。","聽音樂。"],
+      [175,"読む（読みます）","よむ","讀／閱讀","核心動詞","1類動詞","毎晩、本を読みます。","每天晚上看書。"],
+      [176,"書く（書きます）","かく","寫／畫","核心動詞","1類動詞","ここに名前を書いてください。","請在這裡寫上名字。"],
+      [177,"話す（話します）","はなす","說／講話","核心動詞","1類動詞","日本語で話しましょう。","用日文聊天吧。"],
+      [178,"買う（買います）","かう","買","核心動詞","1類動詞","デパートで靴を買います。","在百貨公司買鞋子。"],
+      [179,"売る（売ります）","うる","賣","核心動詞","1類動詞","この店は本を売っています。","這家店有在賣書。"],
+      [180,"作る（作ります）","つくる","做／製作","核心動詞","1類動詞","母が朝ご飯を作ります。","媽媽做早餐。"],
+      [181,"起きる（起きます）","おきる","起床","核心動詞","2類動詞","朝、七時に起きます。","早上七點起床。"],
+      [182,"寝る（寝ます）","ねる","睡覺","核心動詞","2類動詞","十一時に寝ます。","十一點睡覺。"],
+      [183,"勉強する（勉強します）","べんきょうする","唸書／學習","核心動詞","3類動詞","図書館で勉強します。","在圖書館唸書。"],
+      [184,"働く（働きます）","はたらく","工作","核心動詞","1類動詞","九時から五時まで働きます。","從九點工作到五點。"],
+      [185,"休む（休みます）","やすむ","休息／請假","核心動詞","1類動詞","今日は学校を休みます。","今天向學校請假。"],
+      [186,"遊ぶ（遊びます）","あそぶ","玩耍","核心動詞","1類動詞","日曜日に友達と遊びます。","星期天和朋友一起玩。"],
+      [187,"泳ぐ（泳ぎます）","およぐ","游泳","核心動詞","1類動詞","プールで泳ぎます。","在游泳池游泳。"],
+      [188,"歩く（歩きます）","あるく","走路","核心動詞","1類動詞","駅まで歩きます。","走路去車站。"],
+      [189,"走る（走ります）","はしる","跑步","核心動詞","1類動詞","毎朝、公園を走ります。","每天早上在公園跑步。"],
+      [190,"乗る（乗ります）","のる","搭乘","核心動詞","1類動詞","電車に乗ります。","搭電車。"],
+      [191,"降りる（降ります）","おりる","下車","核心動詞","2類動詞","次の駅で電車を降ります。","在下一站下電車。"],
+      [192,"開ける（開けます）","あける","打開（他動詞）","核心動詞","自他動詞配對［他］","窓を開けてください。","請把窗戶打開。"],
+      [193,"開く（開きます）","あく","打開／開著（自動詞）","核心動詞","自他動詞配對［自］","ドアが開いています。","門開著。"],
+      [194,"閉める（閉めます）","しめる","關閉（他動詞）","核心動詞","自他動詞配對［他］","ドアを閉めてください。","請把門關上。"],
+      [195,"閉まる（閉まります）","しまる","關上（自動詞）","核心動詞","自他動詞配對［自］","エレベーターのドアが閉まります。","電梯門要關上了。"],
+      [196,"つける（つけます）","つける","打開（電器）","核心動詞","2類動詞","電気をつけてください。","請開燈。"],
+      [197,"消す（消します）","けす","關掉／擦掉","核心動詞","1類動詞","寝る前に電気を消します。","睡前把燈關掉。"],
+      [198,"ある（あります）","ある","有／在（無生命）","核心動詞","存在動詞","机の上に本があります。","桌子上有書。"],
+      [199,"いる（います）","いる","有／在（有生命）","核心動詞","存在動詞","庭に犬がいます。","院子裡有狗。"],
+      [200,"知る（知っています）","しる","知道","核心動詞","1類動詞","田中さんの電話番号を知っていますか。","你知道田中先生的電話嗎？"],
+      [201,"分かる（分かります）","わかる","懂／明白","核心動詞","1類動詞","日本語が少し分かります。","我懂一點日文。"],
+      [202,"待つ（待ちます）","まつ","等待","核心動詞","1類動詞","ここで少し待ってください。","請在這裡稍等一下。"],
+      [203,"会う（会います）","あう","見面","核心動詞","1類動詞","駅で友達に会います。","在車站和朋友見面。"],
+      [204,"教える（教えます）","おしえる","教／告訴","核心動詞","2類動詞","先生は英語を教えます。","老師教英文。"],
+      [205,"習う（習います）","ならう","學習（跟別人學）","核心動詞","1類動詞","先生に日本語を習います。","跟老師學日文。"],
+      [206,"忘れる（忘れます）","わすれる","忘記","核心動詞","2類動詞","傘を電車に忘れました。","把傘忘在電車上了。"],
+      [207,"覚える（覚えます）","おぼえる","記住／背誦","核心動詞","2類動詞","毎日、新しい単語を覚えます。","每天背新單字。"],
+      [208,"撮る（撮ります）","とる","拍攝（照片）","核心動詞","1類動詞","ここで写真を撮ってもいいですか。","可以在這裡拍照嗎？"],
+      [209,"洗う（洗います）","あらう","洗","核心動詞","1類動詞","石鹸で手を洗います。","用肥皂洗手。"],
+
+      // 十、形容詞（い形／な形） (32)
+      [210,"大きい","おおきい","大的","形容詞","い形容詞","これは大きいパソコンです。","這是一台大電腦。"],
+      [211,"小さい","ちいさい","小的","形容詞","い形容詞","小さい猫がいます。","有一隻小貓。"],
+      [212,"新しい","あたらしい","新的","形容詞","い形容詞","新しいスマートフォンを買いました。","買了新的智慧型手機。"],
+      [213,"古い","ふるい","舊的","形容詞","い形容詞","この本はとても古いです。","這本書非常舊。"],
+      [214,"良い（いい）","いい","好的","形容詞","い形容詞（特殊）","今日はいい天気ですね。","今天天氣真好呢。"],
+      [215,"悪い","わるい","壞的／不好的","形容詞","い形容詞","昨日は天気が悪かったです。","昨天天氣不好。"],
+      [216,"高い","たかい","貴的／高的","形容詞","い形容詞（一詞多義）","このレストランのケーキは高いです。","這家餐廳的蛋糕很貴。"],
+      [217,"安い","やすい","便宜的","形容詞","い形容詞","この店は果物が安いです。","這家店的水果很便宜。"],
+      [218,"低い","ひくい","矮的／低的","形容詞","い形容詞","弟は背が低いです。","弟弟個子矮。"],
+      [219,"暑い","あつい","熱的（天氣）","形容詞","い形容詞（易混淆）","日本の夏はとても暑いです。","日本的夏天非常炎熱。"],
+      [220,"熱い","あつい","燙的（觸覺）","形容詞","い形容詞（易混淆）","このコーヒーは熱いですよ。","這杯咖啡很燙喔。"],
+      [221,"寒い","さむい","冷的（天氣）","形容詞","い形容詞","冬は寒くなります。","冬天會變冷。"],
+      [222,"冷たい","つめたい","冰涼的（觸覺）","形容詞","い形容詞","冷たい水を飲みたいです。","我想喝冰水。"],
+      [223,"忙しい","いそがしい","忙碌的","形容詞","い形容詞","今週はとても忙しいです。","這週非常忙碌。"],
+      [224,"楽しい","たのしい","快樂的／愉快的","形容詞","い形容詞","旅行はとても楽しかったです。","旅行非常愉快。"],
+      [225,"美味しい","おいしい","好吃的","形容詞","い形容詞","この店、美味しいですよ。","這家店很好吃喔。"],
+      [226,"難しい","むずかしい","困難的","形容詞","い形容詞","漢字は少し難しいです。","漢字有點難。"],
+      [227,"易しい","やさしい","簡單的／容易的","形容詞","い形容詞","このテストは易しいです。","這次考試很簡單。"],
+      [228,"面白い","おもしろい","有趣的","形容詞","い形容詞","この映画はとても面白いです。","這部電影非常有趣。"],
+      [229,"白い","しろい","白色的","形容詞","い形容詞","白いシャツを着ています。","穿著白襯衫。"],
+      [230,"黒い","くろい","黑色的","形容詞","い形容詞","黒い靴を買いました。","買了黑色的鞋子。"],
+      [231,"赤い","あかい","紅色的","形容詞","い形容詞","赤いりんごが三つあります。","有三顆紅蘋果。"],
+      [232,"青い","あおい","藍色的","形容詞","い形容詞","青い空がきれいです。","藍天很美。"],
+      [233,"きれい（な）","きれい","漂亮／乾淨","形容詞","な形容詞（極易混淆！）","ここはとてもきれいなホテルですね。","這裡是非常漂亮的飯店呢。"],
+      [234,"静か（な）","しずか","安靜的","形容詞","な形容詞","教室が静かになりました。","教室變安靜了。"],
+      [235,"にぎやか（な）","にぎやか","熱鬧的","形容詞","な形容詞","東京はとてもにぎやかな街です。","東京是非常熱鬧的城市。"],
+      [236,"有名（な）","ゆうめい","有名的","形容詞","な形容詞","このレストランはとても有名です。","這家餐廳非常有名。"],
+      [237,"親切（な）","しんせつ","親切的","形容詞","な形容詞","先生はとても親切です。","老師非常親切。"],
+      [238,"元気（な）","げんき","有精神的／健康的","形容詞","な形容詞","お父さんはお元気ですか。","您父親身體好嗎？"],
+      [239,"暇（な）","ひま","有空的","形容詞","な形容詞","明日、暇ですか。","明天有空嗎？"],
+      [240,"好き（な）","すき","喜歡的","形容詞","な形容詞","私はケーキよりコーヒーのほうが好きです。","比起蛋糕我更喜歡咖啡。"],
+      [241,"上手（な）","じょうず","擅長的／厲害的","形容詞","な形容詞","母は料理が上手です。","媽媽很擅長料理。"],
+
+      // 十一、副詞・疑問詞 (14)
+      [242,"とても","とても","非常","副詞・疑問詞","副詞","日本語の勉強はとても面白いです。","學日文非常有趣。"],
+      [243,"少し","すこし","一點點／稍微","副詞・疑問詞","副詞","日本語が少し話せます。","我會說一點點日文。"],
+      [244,"たくさん","たくさん","很多","副詞・疑問詞","副詞","昨日、写真をたくさん撮りました。","昨天拍了很多照片。"],
+      [245,"ちょっと","ちょっと","稍微／一下","副詞・疑問詞","副詞","ちょっと待ってください。","請等一下。"],
+      [246,"もう","もう","已經／再","副詞・疑問詞","副詞","もうご飯を食べましたか。","已經吃過飯了嗎？"],
+      [247,"まだ","まだ","還（沒）","副詞・疑問詞","副詞","いいえ、まだ食べていません。","不，還沒吃。"],
+      [248,"いつも","いつも","總是／經常","副詞・疑問詞","副詞","いつも図書館で勉強します。","總是在圖書館唸書。"],
+      [249,"時々","ときどき","有時候","副詞・疑問詞","副詞","時々、映画を見ます。","有時候會看電影。"],
+      [250,"あまり","あまり","不太……（接否定）","副詞・疑問詞","副詞","あまりテレビを見ません。","不太看電視。"],
+      [251,"全然","ぜんぜん","完全不……（接否定）","副詞・疑問詞","副詞","昨日、全然寝ませんでした。","昨天完全沒睡。"],
+      [252,"何","なに","什麼","副詞・疑問詞","疑問詞","これは何ですか。","這是什麼？"],
+      [253,"誰","だれ","誰","副詞・疑問詞","疑問詞","あの人は誰ですか。","那個人是誰？"],
+      [254,"いつ","いつ","什麼時候","副詞・疑問詞","疑問詞","いつ日本へ行きますか。","什麼時候去日本？"],
+      [255,"いくら","いくら","多少錢","副詞・疑問詞","疑問詞","このケーキはいくらですか。","這個蛋糕多少錢？"]
+    ];
+
+    const VOCAB = VOCAB_RAW.map(r => ({
+      id: r[0], word: r[1], kana: r[2], zh: r[3], cat: r[4], note: r[5], exJp: r[6], exZh: r[7]
+    }));
+
+    // ==========================================
+    // 2. 狀態管理與 LocalStorage 記憶
+    // ==========================================
+    const STORAGE_KEY = "jlpt_n5_vocab_progress_v1";
+    let progressMap = {};
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) progressMap = JSON.parse(saved) || {};
+    } catch (e) {}
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progressMap));
+      } catch (e) {}
+      updateTopStats();
+    }
+
+    let currentMode = "listen"; // "listen" | "quiz" | "list"
+    let filterCat = "all";
+    let filterStatus = "all";
+    let hasUserInteracted = false;
+
+    // 聽力盲聽練習狀態
+    let deckList = [];
+    let deckIndex = 0;
+    let isRevealed = false;
+    let listenLevel = "word"; // "word" | "sentence" | "dictation"
+    let dictationInputVal = "";
+    let dictationResult = null; // { ok: boolean, userText: string }
+
+    // 四選一測驗狀態
+    let quizType = "listen"; // 預設即聽音辨字
+    let quizItem = null;
+    let quizOptions = [];
+    let quizAnswered = false;
+    let quizUserPick = null;
+    let quizStreak = 0;
+    let quizTotal = 0;
+    let quizCorrect = 0;
+
+    let listSearchQuery = "";
+
+    // ==========================================
+    // 3. 模擬真人發音引擎
+    // ==========================================
+    let engineMode = "browser";
+    let jaVoices = [];
+    let selectedVoiceURI = "";
+    let openAiKey = "";
+    let speechToken = 0;
+    let activeAudioEl = null;
+
+    function scoreVoice(v) {
+      const n = v.name.toLowerCase();
+      let s = 0;
+      if (n.includes("natural") || n.includes("online")) s += 120;
+      if (n.includes("nanami")) s += 90;
+      if (n.includes("google")) s += 80;
+      if (n.includes("enhanced") || n.includes("premium")) s += 70;
+      if (n.includes("keita") || n.includes("o-ren") || n.includes("kyoko")) s += 50;
+      if (n.includes("haruka") || n.includes("ichiro")) s += 15;
+      return s;
+    }
+
+    function loadBrowserVoices() {
+      if (!("speechSynthesis" in window)) return;
+      const all = window.speechSynthesis.getVoices();
+      jaVoices = all.filter(v => v.lang && v.lang.toLowerCase().startsWith("ja"))
+                    .sort((a, b) => scoreVoice(b) - scoreVoice(a));
+      if (jaVoices.length > 0 && !selectedVoiceURI) {
+        selectedVoiceURI = jaVoices[0].voiceURI;
+      }
+      const sel = document.getElementById("browserVoiceSelect");
+      if (sel) {
+        if (jaVoices.length === 0) {
+          sel.innerHTML = `<option value="">未偵測到日語語音包</option>`;
+        } else {
+          sel.innerHTML = jaVoices.map(v => {
+            const star = /natural|online|google|enhanced|premium/i.test(v.name) ? "★ " : "";
+            return `<option value="${v.voiceURI}" ${v.voiceURI === selectedVoiceURI ? "selected" : ""}>${star}${v.name}</option>`;
+          }).join("");
+        }
+      }
+    }
+
+    if ("speechSynthesis" in window) {
+      loadBrowserVoices();
+      window.speechSynthesis.onvoiceschanged = loadBrowserVoices;
+    }
+
+    function normalizeTtsText(text) {
+      return text
+        .replace(/九時/g, "くじ")
+        .replace(/四時/g, "よじ")
+        .replace(/七時/g, "しちじ")
+        .replace(/何時/g, "なんじ")
+        .replace(/何羽/g, "なんわ")
+        .replace(/何人/g, "なんにん")
+        .replace(/空きました/g, "すきました")
+        .replace(/一日/g, "いちにち");
+    }
+
+    function stopSpeaking() {
+      speechToken++;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      if (activeAudioEl) {
+        activeAudioEl.pause();
+        activeAudioEl = null;
+      }
+      const st = document.getElementById("speakingStatus");
+      if (st) st.textContent = "";
+    }
+
+    function speakText(text, customRate = null) {
+      return new Promise(async (resolve) => {
+        stopSpeaking();
+        const myToken = speechToken;
+        const rate = customRate || parseFloat(document.getElementById("rateSelect")?.value || "0.95");
+        const cleanText = normalizeTtsText(text);
+        const st = document.getElementById("speakingStatus");
+        if (st) st.textContent = "🔊 真人語音播放中...";
+
+        try {
+          if (engineMode === "voicevox") {
+            const speaker = document.getElementById("voicevoxSpeakerSelect").value || "2";
+            const qRes = await fetch(`http://127.0.0.1:50021/audio_query?text=${encodeURIComponent(cleanText)}&speaker=${speaker}`, { method: "POST" });
+            if (!qRes.ok) throw new Error("無法連線至本機 VOICEVOX (127.0.0.1:50021)");
+            const query = await qRes.json();
+            query.speedScale = rate;
+            const sRes = await fetch(`http://127.0.0.1:50021/synthesis?speaker=${speaker}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(query)
+            });
+            const blob = await sRes.blob();
+            if (myToken !== speechToken) return resolve();
+            await playBlobAudio(blob, myToken);
+          } else if (engineMode === "openai") {
+            if (!openAiKey) throw new Error("請先填入 OpenAI API Key");
+            const voice = document.getElementById("openaiVoiceSelect").value || "nova";
+            const res = await fetch("https://api.openai.com/v1/audio/speech", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": `Bearer ${openAiKey}` },
+              body: JSON.stringify({ model: "tts-1", voice, input: cleanText, speed: rate })
+            });
+            if (!res.ok) throw new Error("OpenAI TTS 請求失敗");
+            const blob = await res.blob();
+            if (myToken !== speechToken) return resolve();
+            await playBlobAudio(blob, myToken);
+          } else {
+            if (!("speechSynthesis" in window)) throw new Error("瀏覽器不支援語音");
+            await new Promise((res) => {
+              const utter = new SpeechSynthesisUtterance(cleanText);
+              utter.lang = "ja-JP";
+              const chosen = jaVoices.find(v => v.voiceURI === selectedVoiceURI) || jaVoices[0];
+              if (chosen) utter.voice = chosen;
+              utter.rate = rate;
+              utter.pitch = 1.0;
+              utter.onend = res;
+              utter.onerror = res;
+              window.speechSynthesis.speak(utter);
+            });
+          }
+        } catch (err) {
+          if (st) st.textContent = "⚠️ " + (err.message || "語音播放失敗");
+          setTimeout(() => { if (st && myToken === speechToken) st.textContent = ""; }, 3000);
+          return resolve();
+        }
+
+        if (myToken === speechToken && st) st.textContent = "";
+        resolve();
+      });
+    }
+
+    function playBlobAudio(blob, token) {
+      return new Promise((resolve) => {
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        activeAudioEl = audio;
+        audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
+        audio.onerror = () => { URL.revokeObjectURL(url); resolve(); };
+        if (token !== speechToken) { URL.revokeObjectURL(url); return resolve(); }
+        audio.play().catch(() => resolve());
+      });
+    }
+
+    function testSampleVoice() {
+      hasUserInteracted = true;
+      speakText("おはようございます。今日も一緒に日本語を勉強しましょう。");
+    }
+
+    function onEngineChange(val) {
+      engineMode = val;
+      document.getElementById("browserVoiceRow").style.display = val === "browser" ? "flex" : "none";
+      document.getElementById("voicevoxRow").style.display = val === "voicevox" ? "flex" : "none";
+      document.getElementById("openaiRow").style.display = val === "openai" ? "flex" : "none";
+    }
+
+    function toggleVoiceDrawer() {
+      document.getElementById("voiceDrawer").classList.toggle("open");
+    }
+
+    // ==========================================
+    // 4. 篩選與初始化
+    // ==========================================
+    function initCategories() {
+      const cats = [...new Set(VOCAB.map(v => v.cat))];
+      const sel = document.getElementById("categorySelect");
+      sel.innerHTML = `<option value="all">全部分類（${VOCAB.length} 詞）</option>` +
+        cats.map(c => {
+          const cnt = VOCAB.filter(v => v.cat === c).length;
+          return `<option value="${c}">${c}（${cnt}）</option>`;
+        }).join("");
+    }
+
+    function getFilteredVocab() {
+      return VOCAB.filter(v => {
+        if (filterCat !== "all" && v.cat !== filterCat) return false;
+        const st = progressMap[v.id];
+        if (filterStatus === "review" && st !== "review") return false;
+        if (filterStatus === "mastered" && st !== "mastered") return false;
+        if (filterStatus === "unmastered" && st === "mastered") return false;
+        return true;
+      });
+    }
+
+    function updateTopStats() {
+      const mastered = Object.values(progressMap).filter(v => v === "mastered").length;
+      const review = Object.values(progressMap).filter(v => v === "review").length;
+      document.getElementById("totalCountPill").textContent = `總單字 ${VOCAB.length}`;
+      document.getElementById("masteredPill").textContent = `✅ 已熟記 ${mastered}`;
+      document.getElementById("reviewPill").textContent = `🔁 待複習 ${review}`;
+    }
+
+    function onFilterChange() {
+      hasUserInteracted = true;
+      filterCat = document.getElementById("categorySelect").value;
+      filterStatus = document.getElementById("statusSelect").value;
+      if (currentMode === "listen") rebuildDeck();
+      else if (currentMode === "quiz") nextQuizQuestion();
+      else renderListMode();
+    }
+
+    function switchMode(mode) {
+      hasUserInteracted = true;
+      stopSpeaking();
+      currentMode = mode;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(`tab-${mode}`).classList.add("active");
+      if (mode === "listen") rebuildDeck();
+      else if (mode === "quiz") nextQuizQuestion();
+      else renderListMode();
+    }
+
+    // ==========================================
+    // 5. 模式一：聽力盲聽練習（取代翻卡）
+    // ==========================================
+    function rebuildDeck() {
+      deckList = getFilteredVocab();
+      // 預設先隨機洗牌一次，避免只按順序背而失去聽力挑戰性
+      for (let i = deckList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deckList[i], deckList[j]] = [deckList[j], deckList[i]];
+      }
+      deckIndex = 0;
+      isRevealed = false;
+      dictationInputVal = "";
+      dictationResult = null;
+      renderListenMode();
+      if (hasUserInteracted && deckList.length > 0) {
+        setTimeout(() => playCurrentListenAudio(), 150);
+      }
+    }
+
+    function shuffleDeck() {
+      hasUserInteracted = true;
+      for (let i = deckList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deckList[i], deckList[j]] = [deckList[j], deckList[i]];
+      }
+      deckIndex = 0;
+      isRevealed = false;
+      dictationInputVal = "";
+      dictationResult = null;
+      renderListenMode();
+      setTimeout(() => playCurrentListenAudio(), 150);
+    }
+
+    function playCurrentListenAudio(customRate = null) {
+      hasUserInteracted = true;
+      const item = deckList[deckIndex];
+      if (!item) return;
+      const targetText = listenLevel === "sentence" ? item.exJp : item.kana;
+      speakText(targetText, customRate);
+    }
+
+    function setListenLevel(lvl) {
+      hasUserInteracted = true;
+      listenLevel = lvl;
+      isRevealed = false;
+      dictationInputVal = "";
+      dictationResult = null;
+      renderListenMode();
+      setTimeout(() => playCurrentListenAudio(), 150);
+    }
+
+    function getAcceptedAnswers(item) {
+      const set = new Set();
+      const norm = s => (s || "").trim().replace(/[\s　。、！？!?～~]/g, "");
+      set.add(norm(item.kana));
+      const noParen = norm(item.word.replace(/（.*?）/g, ""));
+      if (noParen) set.add(noParen);
+      const fullNoBracket = norm(item.word.replace(/[（）]/g, ""));
+      if (fullNoBracket) set.add(fullNoBracket);
+      const match = item.word.match(/（(.*?)）/);
+      if (match && match[1]) {
+        match[1].split("／").forEach(part => {
+          const p = norm(part);
+          if (p && p !== "な") set.add(p);
+        });
+      }
+      return [...set].filter(Boolean);
+    }
+
+    function checkDictation() {
+      hasUserInteracted = true;
+      const item = deckList[deckIndex];
+      if (!item) return;
+      const inp = document.getElementById("dictationInput");
+      const raw = inp ? inp.value : dictationInputVal;
+      const cleaned = raw.trim().replace(/[\s　。、！？!?～~]/g, "");
+      if (!cleaned) {
+        revealAnswer();
+        return;
+      }
+      const accepted = getAcceptedAnswers(item);
+      const ok = accepted.includes(cleaned);
+      dictationResult = { ok, userText: raw };
+      if (!ok) {
+        progressMap[item.id] = "review";
+        saveProgress();
+      }
+      isRevealed = true;
+      renderListenMode();
+    }
+
+    function revealAnswer() {
+      hasUserInteracted = true;
+      isRevealed = true;
+      renderListenMode();
+    }
+
+    function moveDeck(step) {
+      hasUserInteracted = true;
+      if (deckList.length === 0) return;
+      stopSpeaking();
+      deckIndex = (deckIndex + step + deckList.length) % deckList.length;
+      isRevealed = false;
+      dictationInputVal = "";
+      dictationResult = null;
+      renderListenMode();
+      setTimeout(() => playCurrentListenAudio(), 150);
+    }
+
+    function markCard(id, status) {
+      progressMap[id] = status;
+      saveProgress();
+      moveDeck(1);
+    }
+
+    function renderListenMode() {
+      const container = document.getElementById("modeContent");
+      if (deckList.length === 0) {
+        container.innerHTML = `<div class="panel" style="text-align:center; padding:40px;">目前篩選條件下沒有單字喔！請切換其他分類或狀態。</div>`;
+        return;
+      }
+
+      const item = deckList[deckIndex];
+      const st = progressMap[item.id];
+      const stBadge = st === "mastered"
+        ? `<span class="pill green">✅ 已熟記</span>`
+        : st === "review"
+        ? `<span class="pill amber">🔁 待複習</span>`
+        : `<span class="pill">第 ${deckIndex + 1} / ${deckList.length} 題</span>`;
+
+      const modeDesc = listenLevel === "sentence"
+        ? "🔥 進階實戰：聽完整日語例句，挑戰能不能直接聽懂句意！"
+        : listenLevel === "dictation"
+        ? "⌨️ 聽寫特訓：聽發音後輸入日文（假名或漢字），按 Enter 批改！"
+        : "🎧 單字盲聽：不看文字純聽發音，想出中文意思後再揭曉解答！";
+
+      let centerHTML = "";
+      if (!isRevealed) {
+        const dictationBox = listenLevel === "dictation" ? `
+          <div class="dictation-area">
+            <input type="text" id="dictationInput" class="dictation-input"
+              placeholder="輸入聽到的假名或漢字..."
+              value="${dictationInputVal.replace(/"/g, '&quot;')}"
+              oninput="dictationInputVal=this.value"
+              onkeydown="if(event.key==='Enter'){ event.preventDefault(); checkDictation(); }" />
+            <button class="btn primary" onclick="checkDictation()">檢查答案</button>
+          </div>
+        ` : "";
+
+        centerHTML = `
+          <div class="blind-center">
+            <div class="audio-hero">
+              <div class="wave-icon">🎧</div>
+              <div style="font-size:0.95rem; color:#0369a1; font-weight:600;">${modeDesc}</div>
+              <div class="audio-btn-group">
+                <button class="btn accent btn-big-audio" onclick="playCurrentListenAudio()">🔊 播放聽力題目</button>
+                <button class="btn btn-big-audio" onclick="playCurrentListenAudio(0.75)">🐢 0.75x 慢速重聽</button>
+              </div>
+              ${dictationBox}
+            </div>
+            <div style="margin-top:18px;">
+              <button class="btn primary" style="padding:10px 26px; font-size:1rem;" onclick="revealAnswer()">👁️ 揭曉解答與例句</button>
+            </div>
+          </div>
+        `;
+      } else {
+        const dictFeedback = dictationResult ? `
+          <div class="dictation-result ${dictationResult.ok ? 'ok' : 'bad'}">
+            ${dictationResult.ok
+              ? `✅ 聽寫正確！您輸入的「${dictationResult.userText}」完全正確！`
+              : `❌ 聽寫有誤（您輸入：「${dictationResult.userText}」），已自動加入待複習清單。`}
+          </div>
+        ` : "";
+
+        centerHTML = `
+          <div class="answer-reveal-box">
+            ${dictFeedback}
+            <div class="meaning-zh" style="margin-top:10px;">${item.zh}</div>
+            <div class="word-revealed">${item.word}</div>
+            <div class="kana-revealed">${item.kana}　<span class="cat-badge">${item.note}</span></div>
+            <div class="example-box">
+              <div class="ex-jp">${item.exJp}</div>
+              <div class="ex-zh">${item.exZh}</div>
+              <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn accent" onclick="speakText('${item.kana}')">🔊 唸單字</button>
+                <button class="btn" onclick="speakText('${item.exJp.replace(/'/g, "\\'")}')">🔊 唸例句</button>
+                <button class="btn" onclick="speakText('${item.exJp.replace(/'/g, "\\'")}', 0.75)">🐢 慢速例句</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      const bottomHTML = isRevealed
+        ? `
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn success" onclick="markCard(${item.id}, 'mastered')">✅ 聽懂了（熟記）</button>
+            <button class="btn warning" onclick="markCard(${item.id}, 'review')">🔁 沒聽懂（待複習）</button>
+          </div>
+          <button class="btn" onclick="isRevealed=false; renderListenMode();">↺ 回到盲聽</button>
+        `
+        : `
+          <span style="font-size:0.84rem; color:var(--muted);">提示：試著不看文字直接反應意思，聽不懂可點慢速重聽</span>
+          <span></span>
+        `;
+
+      container.innerHTML = `
+        <div class="panel" style="padding:10px 14px;">
+          <div class="panel-row">
+            <div class="control-group">
+              <b>聽力難度：</b>
+              <button class="btn ${listenLevel==='word'?'primary':''}" onclick="setListenLevel('word')">🎧 單字盲聽</button>
+              <button class="btn ${listenLevel==='sentence'?'primary':''}" onclick="setListenLevel('sentence')">🔥 整句例句盲聽</button>
+              <button class="btn ${listenLevel==='dictation'?'primary':''}" onclick="setListenLevel('dictation')">⌨️ 聽寫拼字</button>
+            </div>
+            <div class="control-group">
+              <button class="btn" onclick="shuffleDeck()">🔀 重新洗牌</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listen-stage">
+          <div class="listen-card ${isRevealed ? 'revealed' : ''}">
+            <div class="card-top-meta">
+              <span class="cat-badge">${item.cat}</span>
+              <span>${stBadge}</span>
+            </div>
+            ${centerHTML}
+            <div class="card-bottom-actions">${bottomHTML}</div>
+          </div>
+        </div>
+
+        <div class="nav-deck">
+          <button class="btn" onclick="moveDeck(-1)">⬅ 上一題</button>
+          <span style="font-size:0.85rem; color:var(--muted);">快捷鍵：R 重聽｜空白鍵 揭曉答案｜← → 換題</span>
+          <button class="btn primary" onclick="moveDeck(1)">下一題（自動播放） ➡</button>
+        </div>
+      `;
+
+      if (!isRevealed && listenLevel === "dictation") {
+        setTimeout(() => document.getElementById("dictationInput")?.focus(), 50);
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (currentMode !== "listen") return;
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!isRevealed) revealAnswer();
+        else moveDeck(1);
+      } else if (e.code === "ArrowRight") {
+        e.preventDefault();
+        moveDeck(1);
+      } else if (e.code === "ArrowLeft") {
+        e.preventDefault();
+        moveDeck(-1);
+      } else if (e.key === "r" || e.key === "R") {
+        playCurrentListenAudio();
+      }
+    });
+
+    // ==========================================
+    // 6. 模式二：四選一測驗（聽音辨字／看字）
+    // ==========================================
+    function nextQuizQuestion() {
+      const pool = getFilteredVocab();
+      const container = document.getElementById("modeContent");
+      if (pool.length < 4) {
+        container.innerHTML = `<div class="panel" style="text-align:center; padding:40px;">測驗模式至少需要 4 個單字，目前篩選結果僅 ${pool.length} 個，請放寬篩選條件。</div>`;
+        return;
+      }
+
+      const target = pool[Math.floor(Math.random() * pool.length)];
+      const sameCatPool = VOCAB.filter(v => v.id !== target.id && v.cat === target.cat);
+      const otherPool = VOCAB.filter(v => v.id !== target.id && v.cat !== target.cat);
+      const distractors = [];
+      const shuffledSame = [...sameCatPool].sort(() => Math.random() - 0.5);
+      const shuffledOther = [...otherPool].sort(() => Math.random() - 0.5);
+
+      for (const d of [...shuffledSame, ...shuffledOther]) {
+        if (distractors.length >= 3) break;
+        if (d.zh !== target.zh && !distractors.some(x => x.zh === d.zh)) {
+          distractors.push(d);
+        }
+      }
+
+      quizItem = target;
+      quizOptions = [target, ...distractors].sort(() => Math.random() - 0.5);
+      quizAnswered = false;
+      quizUserPick = null;
+
+      renderQuizMode();
+      if (quizType === "listen" && hasUserInteracted) {
+        setTimeout(() => speakText(quizItem.kana), 150);
+      }
+    }
+
+    function renderQuizMode() {
+      const container = document.getElementById("modeContent");
+      if (!quizItem) return;
+
+      let promptHTML = "";
+      if (quizType === "jp2zh") {
+        promptHTML = `
+          <div class="quiz-prompt-big">${quizItem.word}</div>
+          <div class="quiz-prompt-sub">${quizItem.kana}　<button class="btn" style="padding:3px 8px; font-size:0.8rem;" onclick="hasUserInteracted=true; speakText('${quizItem.kana}')">🔊 發音</button></div>
+        `;
+      } else if (quizType === "zh2jp") {
+        promptHTML = `
+          <div class="quiz-prompt-big">${quizItem.zh}</div>
+          <div class="quiz-prompt-sub">${quizItem.cat}・${quizItem.note}</div>
+        `;
+      } else {
+        promptHTML = `
+          <div style="margin-bottom:10px; font-size:1rem; color:var(--muted);">請聽發音，選出正確的單字與中文意思：</div>
+          <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn accent" style="font-size:1.02rem; padding:10px 20px;" onclick="hasUserInteracted=true; speakText('${quizItem.kana}')">🔊 播放發音</button>
+            <button class="btn" onclick="hasUserInteracted=true; speakText('${quizItem.kana}', 0.75)">🐢 慢速播放</button>
+          </div>
+        `;
+      }
+
+      const optsHTML = quizOptions.map((opt, idx) => {
+        let cls = "q-opt";
+        if (quizAnswered) {
+          if (opt.id === quizItem.id) cls += " correct";
+          else if (idx === quizUserPick) cls += " wrong";
+        }
+        let label = "";
+        if (quizType === "jp2zh") label = opt.zh;
+        else if (quizType === "zh2jp") label = `${opt.word}（${opt.kana}）`;
+        else label = `${opt.word}（${opt.kana}）— ${opt.zh}`;
+
+        return `
+          <button class="${cls}" ${quizAnswered ? "disabled" : ""} onclick="answerQuiz(${idx})">
+            <span class="q-opt-num">${idx + 1}</span>
+            <span>${label}</span>
+          </button>
+        `;
+      }).join("");
+
+      const isRight = quizAnswered && quizOptions[quizUserPick].id === quizItem.id;
+      const rate = quizTotal > 0 ? Math.round((quizCorrect / quizTotal) * 100) : 0;
+
+      container.innerHTML = `
+        <div class="panel" style="padding:10px 14px;">
+          <div class="panel-row">
+            <div class="control-group">
+              <b>練習題型：</b>
+              <button class="btn ${quizType==='listen'?'primary':''}" onclick="hasUserInteracted=true; quizType='listen'; nextQuizQuestion();">🎧 聽音辨字</button>
+              <button class="btn ${quizType==='jp2zh'?'primary':''}" onclick="hasUserInteracted=true; quizType='jp2zh'; nextQuizQuestion();">看日文選中文</button>
+              <button class="btn ${quizType==='zh2jp'?'primary':''}" onclick="hasUserInteracted=true; quizType='zh2jp'; nextQuizQuestion();">看中文選日文</button>
+            </div>
+            <div class="control-group">
+              <span class="pill">已測 ${quizTotal} 題</span>
+              <span class="pill green">正確率 ${rate}%</span>
+              <span class="pill amber">🔥 連對 ${quizStreak}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-question-box">${promptHTML}</div>
+          <div class="quiz-options">${optsHTML}</div>
+
+          <div class="quiz-feedback ${quizAnswered ? 'show ' + (isRight ? 'ok' : 'bad') : ''}">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <b>${isRight ? "✅ 答對了！" : `❌ 答錯了！正確答案是：${quizItem.word}（${quizItem.kana}）＝ ${quizItem.zh}（已自動加入待複習）`}</b>
+              <button class="btn primary" onclick="hasUserInteracted=true; nextQuizQuestion()">下一題 ➡</button>
+            </div>
+            <div class="example-box">
+              <div class="ex-jp">${quizItem.exJp}</div>
+              <div class="ex-zh">${quizItem.exZh}</div>
+              <div style="margin-top:8px; display:flex; gap:8px;">
+                <button class="btn accent" onclick="speakText('${quizItem.kana}')">🔊 唸單字</button>
+                <button class="btn" onclick="speakText('${quizItem.exJp.replace(/'/g, "\\'")}')">🔊 唸例句</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function answerQuiz(idx) {
+      if (quizAnswered) return;
+      hasUserInteracted = true;
+      quizAnswered = true;
+      quizUserPick = idx;
+      quizTotal++;
+      const isRight = quizOptions[idx].id === quizItem.id;
+      if (isRight) {
+        quizCorrect++;
+        quizStreak++;
+      } else {
+        quizStreak = 0;
+        progressMap[quizItem.id] = "review";
+        saveProgress();
+      }
+      renderQuizMode();
+      speakText(quizItem.kana);
+    }
+
+    // ==========================================
+    // 7. 模式三：單字總表一覽
+    // ==========================================
+    function renderListMode() {
+      const container = document.getElementById("modeContent");
+      const baseList = getFilteredVocab();
+      const q = listSearchQuery.trim().toLowerCase();
+      const filtered = q
+        ? baseList.filter(v =>
+            v.word.toLowerCase().includes(q) ||
+            v.kana.toLowerCase().includes(q) ||
+            v.zh.toLowerCase().includes(q)
+          )
+        : baseList;
+
+      const itemsHTML = filtered.map(v => {
+        const st = progressMap[v.id] || "";
+        return `
+          <div class="vocab-item ${st}">
+            <div>
+              <div class="vi-top">
+                <div>
+                  <div class="vi-word">${v.word}</div>
+                  <div class="vi-kana">${v.kana}</div>
+                </div>
+                <span class="cat-badge">${v.note}</span>
+              </div>
+              <div class="vi-zh">${v.zh}</div>
+            </div>
+            <div class="vi-ex">
+              <div>${v.exJp}</div>
+              <div style="color:var(--muted);">${v.exZh}</div>
+            </div>
+            <div class="vi-actions">
+              <div style="display:flex; gap:6px;">
+                <button class="btn accent" onclick="speakText('${v.kana}')">🔊 單字</button>
+                <button class="btn" onclick="speakText('${v.exJp.replace(/'/g, "\\'")}')">🔊 例句</button>
+              </div>
+              <div style="display:flex; gap:5px;">
+                <button class="btn ${st==='mastered'?'success':''}" onclick="toggleListStatus(${v.id}, 'mastered')">✅</button>
+                <button class="btn ${st==='review'?'warning':''}" onclick="toggleListStatus(${v.id}, 'review')">🔁</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <div class="panel" style="padding:10px 14px;">
+          <div class="panel-row">
+            <div class="control-group">
+              <b>🔍 搜尋單字：</b>
+              <input type="text" id="listSearchInput" placeholder="輸入漢字、假名或中文..." value="${listSearchQuery}" oninput="listSearchQuery=this.value; renderListModeKeepFocus();" style="width:240px;" />
+            </div>
+            <span style="font-size:0.86rem; color:var(--muted);">顯示 ${filtered.length} 個單字</span>
+          </div>
+        </div>
+        <div class="vocab-list">${itemsHTML || '<div class="panel">找不到符合的單字</div>'}</div>
+      `;
+    }
+
+    function renderListModeKeepFocus() {
+      const val = listSearchQuery;
+      renderListMode();
+      const inp = document.getElementById("listSearchInput");
+      if (inp) {
+        inp.focus();
+        inp.setSelectionRange(val.length, val.length);
+      }
+    }
+
+    function toggleListStatus(id, target) {
+      if (progressMap[id] === target) delete progressMap[id];
+      else progressMap[id] = target;
+      saveProgress();
+      renderListMode();
+    }
+
+    // 啟動初始化
+    initCategories();
+    updateTopStats();
+    rebuildDeck();
+  </script>
+</body>
+</html>
